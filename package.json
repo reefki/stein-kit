@@ -1,0 +1,9 @@
+{
+    "private": true,
+    "scripts": {
+        "pot": "node pot.config.js"
+    },
+    "devDependencies": {
+        "wp-pot": "^1.7.1"
+    }
+}
