@@ -204,7 +204,7 @@ if (! class_exists('Stein_Toolkit_About_Widget') && class_exists('WP_Widget'))
                     <?php foreach ($social_links as $item) : ?>
                         <li class="tw-inline-block tw-px-4">
                             <a href="<?php echo esc_url($item['url']); ?>" target="_blank" title="<?php echo esc_attr($item['name']); ?>" class="tw-block tw-text-base tw-text-strong hover_tw-no-underline">
-                                <i class="bi bi-<?php echo esc_attr($item['icon']); ?>"></i>
+                                <i class="si si-<?php echo esc_attr($item['icon']); ?>"></i>
                             </a>
                         </li>
                     <?php endforeach; ?>

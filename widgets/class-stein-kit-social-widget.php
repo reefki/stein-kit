@@ -180,7 +180,7 @@ if (! class_exists('Stein_Toolkit_Social_Widget') && class_exists('WP_Widget'))
                 <ul class="social tw-flex tw-flex-wrap tw--mr-3 tw--mb-3">
                     <?php foreach ($social as $item) : ?>
                         <li class="social-item tw-w-1/5 tw-mb-3">
-                            <a href="<?php echo esc_url($item['url']); ?>" title="<?php echo esc_attr($item['name']); ?>" class="<?php echo esc_attr(wp_sprintf(implode(' ', $link_classes), $item['icon'])); ?>" target="_blank"><i class="bi bi-<?php echo esc_attr($item['icon']); ?>"></i></a>
+                            <a href="<?php echo esc_url($item['url']); ?>" title="<?php echo esc_attr($item['name']); ?>" class="<?php echo esc_attr(wp_sprintf(implode(' ', $link_classes), $item['icon'])); ?>" target="_blank"><i class="si si-<?php echo esc_attr($item['icon']); ?>"></i></a>
                         </li>
                     <?php endforeach; ?>
                 </ul>

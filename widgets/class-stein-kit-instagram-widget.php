@@ -181,7 +181,7 @@ if (! class_exists('Stein_Toolkit_Instagram_Widget') && class_exists('WP_Widget'
             $button_text = $instance['button_text'];
 
             if ($button_text && ! empty($instance['button_icon'])) {
-                $button_text = "<i class=\"bi bi-instagram tw-mr-2\"></i>{$button_text}";
+                $button_text = "<i class=\"si si-instagram tw-mr-2\"></i>{$button_text}";
             }
             
             if (! empty($posts)) {
