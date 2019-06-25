@@ -19,7 +19,7 @@ if (! class_exists('Stein_Toolkit_Mailchimp'))
          * @access protected
          * @var    string
          */
-        protected $id = 'stein_toolkit_mailchimp';
+        protected $id = 'stein_kit_mailchimp';
 
         /**
          * Base API url.
@@ -58,7 +58,7 @@ if (! class_exists('Stein_Toolkit_Mailchimp'))
                 }
             }
 
-            add_filter('stein_toolkit_mailchimp_lists', array($this, 'lists'), 10, 2);
+            add_filter('stein_kit_mailchimp_lists', array($this, 'lists'), 10, 2);
 
             add_action('admin_menu', array($this, 'add_options_page'));
             add_action('admin_init', array($this, 'register_setting'));
@@ -278,8 +278,8 @@ new Stein_Toolkit_Mailchimp();
  * @package Incredibbble
  * @since   1.0.0
  */
-if (! function_exists('stein_toolkit_mailchimp_lists')) {
-    function stein_toolkit_mailchimp_lists($id = null) {
-        return apply_filters('stein_toolkit_mailchimp_lists', array(), $id);
+if (! function_exists('stein_kit_mailchimp_lists')) {
+    function stein_kit_mailchimp_lists($id = null) {
+        return apply_filters('stein_kit_mailchimp_lists', array(), $id);
     }
 }

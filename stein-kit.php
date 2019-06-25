@@ -122,12 +122,12 @@ if (! class_exists('Stein_Toolkit')) {
  *
  * @since 1.0.0
  */
-if (! function_exists('stein_toolkit_get_option')) {
-    function stein_toolkit_get_option($key, $default = null) {
-        $options = get_option('stein_toolkit', array());
+if (! function_exists('stein_kit_get_option')) {
+    function stein_kit_get_option($key, $default = null) {
+        $options = get_option('stein_kit', array());
 
-        if (substr($key, 0, 13) != 'stein_toolkit_') {
-            $key = "stein_toolkit_{$key}";
+        if (substr($key, 0, 13) != 'stein_kit_') {
+            $key = "stein_kit_{$key}";
         }
 
         if (isset($options[$key]) && ! is_null($options[$key])) {
@@ -144,11 +144,11 @@ if (! function_exists('stein_toolkit_get_option')) {
  * @since 1.0.0
  * @return void
  */
-function stein_toolkit_activated() {
-	do_action('stein_toolkit_activated');
+function stein_kit_activated() {
+	do_action('stein_kit_activated');
 }
 
-register_activation_hook(__FILE__, 'stein_toolkit_activated');
+register_activation_hook(__FILE__, 'stein_kit_activated');
 
 /**
  * Plugin Deactivation.
@@ -156,21 +156,21 @@ register_activation_hook(__FILE__, 'stein_toolkit_activated');
  * @since 1.0.0
  * @return void
  */
-function stein_toolkit_deactivated() {
-	do_action('stein_toolkit_deactivated');
+function stein_kit_deactivated() {
+	do_action('stein_kit_deactivated');
 }
 
-register_deactivation_hook(__FILE__, 'stein_toolkit_deactivated');
+register_deactivation_hook(__FILE__, 'stein_kit_deactivated');
 
 /**
  * Run the plugin.
  *
  * @since 1.0.0
  */
-if (! function_exists('stein_toolkit')) {
-    function stein_toolkit() {
+if (! function_exists('stein_kit')) {
+    function stein_kit() {
         return Stein_Toolkit::instance();
     }
 }
 
-stein_toolkit();
+stein_kit();

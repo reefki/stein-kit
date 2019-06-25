@@ -28,7 +28,7 @@ if (! class_exists('Stein_Toolkit_Instagram'))
 
         public function fetch()
         {
-            $cache_key = 'stein_toolkit_instagram_' . md5($this->username);
+            $cache_key = 'stein_kit_instagram_' . md5($this->username);
 
             if ($cached = get_transient($cache_key)) {
                 $this->data = $cached;

@@ -21,8 +21,8 @@ if (! class_exists('Stein_Toolkit_Instagram_Widget') && class_exists('WP_Widget'
          */
         public function __construct()
         {
-            parent::__construct('stein_toolkit_instagram', esc_html__('Instagram', 'stein-kit'), array(
-                'classname' => 'widget_stein_toolkit_instagram',
+            parent::__construct('stein_kit_instagram', esc_html__('Instagram', 'stein-kit'), array(
+                'classname' => 'widget_stein_kit_instagram',
                 'description' => esc_html__('Displays Instagram feed by username.', 'stein-kit'),
             ));
         }
@@ -36,7 +36,7 @@ if (! class_exists('Stein_Toolkit_Instagram_Widget') && class_exists('WP_Widget'
          */
         public function defaults()
         {
-            return apply_filters('stein_toolkit_instagram_widget_defaults', array(
+            return apply_filters('stein_kit_instagram_widget_defaults', array(
                 'title' => null,
                 'username' => null,
                 'columns' => 3,

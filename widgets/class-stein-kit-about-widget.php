@@ -23,8 +23,8 @@ if (! class_exists('Stein_Toolkit_About_Widget') && class_exists('WP_Widget'))
         {
             add_action('acf/init', array($this, 'acf_init'));
 
-            parent::__construct('stein_toolkit_about', esc_html__('About', 'stein-kit'), array(
-                'classname' => 'widget_stein_toolkit_about',
+            parent::__construct('stein_kit_about', esc_html__('About', 'stein-kit'), array(
+                'classname' => 'widget_stein_kit_about',
                 'description' => esc_html__('Displays about.', 'stein-kit'),
             ));
         }
@@ -43,14 +43,14 @@ if (! class_exists('Stein_Toolkit_About_Widget') && class_exists('WP_Widget'))
                     'key' => 'group_widget_about',
                     'fields' => array(
                         array(
-                            'key' => 'field_stein_toolkit_widget_about_logo',
+                            'key' => 'field_stein_kit_widget_about_logo',
                             'label' => esc_html__('Logo', 'stein-kit'),
                             'name' => 'logo',
                             'type' => 'group',
                             'layout' => 'block',
                             'sub_fields' => array(
                                 array(
-                                    'key' => 'field_stein_toolkit_widget_about_logo_image',
+                                    'key' => 'field_stein_kit_widget_about_logo_image',
                                     'label' => esc_html__('Image', 'stein-kit'),
                                     'name' => 'logo_image',
                                     'type' => 'image',
@@ -58,14 +58,14 @@ if (! class_exists('Stein_Toolkit_About_Widget') && class_exists('WP_Widget'))
                                     'return_format' => 'id',
                                 ),
                                 array(
-                                    'key' => 'field_stein_toolkit_widget_about_logo_width',
+                                    'key' => 'field_stein_kit_widget_about_logo_width',
                                     'label' => esc_html__('Width', 'stein-kit'),
                                     'name' => 'logo_width',
                                     'type' => 'text',
                                     'default_value' => 'auto',
                                 ),
                                 array(
-                                    'key' => 'field_stein_toolkit_widget_about_logo_height',
+                                    'key' => 'field_stein_kit_widget_about_logo_height',
                                     'label' => esc_html__('Height', 'stein-kit'),
                                     'name' => 'logo_height',
                                     'type' => 'text',
@@ -74,14 +74,14 @@ if (! class_exists('Stein_Toolkit_About_Widget') && class_exists('WP_Widget'))
                             ),
                         ),
                         array(
-                            'key' => 'field_stein_toolkit_widget_about_text',
+                            'key' => 'field_stein_kit_widget_about_text',
                             'label' => esc_html__('Text', 'stein-kit'),
                             'name' => 'text',
                             'type' => 'textarea',
                             'rows' => 4,
                         ),
                         array(
-                            'key' => 'field_stein_toolkit_widget_about_social',
+                            'key' => 'field_stein_kit_widget_about_social',
                             'message' => esc_html__('Show social links?', 'stein-kit'),
                             'name' => 'social',
                             'type' => 'true_false',
@@ -92,7 +92,7 @@ if (! class_exists('Stein_Toolkit_About_Widget') && class_exists('WP_Widget'))
                             array(
                                 'param' => 'widget',
                                 'operator' => '==',
-                                'value' => 'stein_toolkit_about',
+                                'value' => 'stein_kit_about',
                             ),
                         ),
                     ),
@@ -160,7 +160,7 @@ if (! class_exists('Stein_Toolkit_About_Widget') && class_exists('WP_Widget'))
             $logo = $this->get_field('logo');
             $text = $this->get_field('text');
             $social_enabled = $this->get_field('social');
-            $social_links = apply_filters('stein_toolkit_about_widget_social', array());
+            $social_links = apply_filters('stein_kit_about_widget_social', array());
             
             echo apply_filters('before_widget', $args['before_widget'], $instance, $this->id_base);
 

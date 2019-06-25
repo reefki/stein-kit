@@ -21,8 +21,8 @@ if (! class_exists('Stein_Toolkit_Social_Widget') && class_exists('WP_Widget'))
          */
         public function __construct()
         {
-            parent::__construct('stein_toolkit_social', esc_html__('Social Links', 'stein-kit'), array(
-                'classname' => 'widget_stein_toolkit_social',
+            parent::__construct('stein_kit_social', esc_html__('Social Links', 'stein-kit'), array(
+                'classname' => 'widget_stein_kit_social',
                 'description' => esc_html__('Displays links to your social accounts.', 'stein-kit'),
             ));
         }
@@ -36,7 +36,7 @@ if (! class_exists('Stein_Toolkit_Social_Widget') && class_exists('WP_Widget'))
          */
         public function defaults()
         {
-            return apply_filters('stein_toolkit_social_widget_defaults', array(
+            return apply_filters('stein_kit_social_widget_defaults', array(
                 'title' => null,
                 'style' => null,
                 'limit' => 10,
@@ -142,7 +142,7 @@ if (! class_exists('Stein_Toolkit_Social_Widget') && class_exists('WP_Widget'))
                 echo apply_filters('after_title', $args['after_title'], $instance, $this->id_base);
             }
     
-            $social = apply_filters('stein_toolkit_social_widget_links', array());
+            $social = apply_filters('stein_kit_social_widget_links', array());
             $social = array_slice($social, 0, $instance['limit']);
 
             $link_classes = array(

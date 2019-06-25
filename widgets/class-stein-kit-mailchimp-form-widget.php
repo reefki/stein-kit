@@ -21,8 +21,8 @@ if (! class_exists('Stein_Toolkit_Mailchimp_Form_Widget') && class_exists('WP_Wi
          */
         public function __construct()
         {
-            parent::__construct('stein_toolkit_mailchimp_form', esc_html__('Mailchimp Form', 'stein-kit'), array(
-                'classname' => 'widget_stein_toolkit_mailchimp_form',
+            parent::__construct('stein_kit_mailchimp_form', esc_html__('Mailchimp Form', 'stein-kit'), array(
+                'classname' => 'widget_stein_kit_mailchimp_form',
                 'description' => esc_html__('Displays Mailchimp sign-up form.', 'stein-kit'),
             ));
         }
@@ -36,7 +36,7 @@ if (! class_exists('Stein_Toolkit_Mailchimp_Form_Widget') && class_exists('WP_Wi
          */
         public function defaults()
         {
-            return apply_filters('stein_toolkit_mailchimp_form_widget_defaults', array(
+            return apply_filters('stein_kit_mailchimp_form_widget_defaults', array(
                 'title' => null,
                 'list' => null,
                 'text' => null,
@@ -78,7 +78,7 @@ if (! class_exists('Stein_Toolkit_Mailchimp_Form_Widget') && class_exists('WP_Wi
         public function form($instance)
         {
             $instance = wp_parse_args((array) $instance, $this->defaults());
-            $lists = stein_toolkit_mailchimp_lists();
+            $lists = stein_kit_mailchimp_lists();
             ?>
                 <p>
                     <label for="<?php echo esc_attr($this->get_field_id('title')); ?>">
@@ -154,7 +154,7 @@ if (! class_exists('Stein_Toolkit_Mailchimp_Form_Widget') && class_exists('WP_Wi
             }
 
             if (! empty($instance['list'])) {
-                $list = stein_toolkit_mailchimp_lists($instance['list']);
+                $list = stein_kit_mailchimp_lists($instance['list']);
                 ?>
                 <form method="POST" action="<?php echo esc_url(set_url_scheme($list['subscribe_url_short'], 'https')); ?>">
                     <p class="tw-mb-4">

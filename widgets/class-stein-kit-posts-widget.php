@@ -21,8 +21,8 @@ if (! class_exists('Stein_Toolkit_Posts_Widget') && class_exists('WP_Widget'))
          */
         public function __construct()
         {
-            parent::__construct('stein_toolkit_posts', esc_html__('Posts', 'sandstein'), array(
-                'classname' => 'widget_stein_toolkit_posts',
+            parent::__construct('stein_kit_posts', esc_html__('Posts', 'sandstein'), array(
+                'classname' => 'widget_stein_kit_posts',
                 'description' => esc_html__('Displays your site\'s posts.', 'sandstein'),
             ));
         }
@@ -36,7 +36,7 @@ if (! class_exists('Stein_Toolkit_Posts_Widget') && class_exists('WP_Widget'))
          */
         public function defaults()
         {
-            return apply_filters('stein_toolkit_posts_widget_defaults', array(
+            return apply_filters('stein_kit_posts_widget_defaults', array(
                 'title' => '',
                 'image_style' => '',
                 'limit' => 5,
@@ -87,10 +87,10 @@ if (! class_exists('Stein_Toolkit_Posts_Widget') && class_exists('WP_Widget'))
         public function form($instance)
         {
             $instance = wp_parse_args((array) $instance, $this->defaults());
-            $orders = apply_filters('stein_toolkit_posts_widget_order_choices', array());
-            $sorts = apply_filters('stein_toolkit_posts_widget_sort_choices', array());
-            $categories = apply_filters('stein_toolkit_posts_widget_category_choices', array());
-            $image_style = apply_filters('stein_toolkit_posts_widget_image_style_choices', array(
+            $orders = apply_filters('stein_kit_posts_widget_order_choices', array());
+            $sorts = apply_filters('stein_kit_posts_widget_sort_choices', array());
+            $categories = apply_filters('stein_kit_posts_widget_category_choices', array());
+            $image_style = apply_filters('stein_kit_posts_widget_image_style_choices', array(
                 '' => esc_html__('Square', 'stein-kit'),
                 'rounded-full' => esc_html__('Circle', 'stein-kit'),
             ));
