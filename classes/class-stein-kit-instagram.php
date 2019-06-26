@@ -3,7 +3,7 @@
  * Instagram class.
  *
  * @package Stein Kit
- * @since   1.0.0
+ * @since   1.0
  */
 
 defined('ABSPATH') or die('Cheatin\' Uh?');

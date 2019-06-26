@@ -3,7 +3,7 @@
  * About widget.
  *
  * @package Stein Kit
- * @since   1.0.0
+ * @since   1.0
  */
 
 defined('ABSPATH') or die('Cheatin\' Uh?');
@@ -15,7 +15,7 @@ if (! class_exists('Stein_Kit_About_Widget') && class_exists('WP_Widget'))
         /**
          * The class constructor.
          * 
-         * @since  1.0.0
+         * @since  1.0
          * @access protected
          * @return void
          */
@@ -32,7 +32,7 @@ if (! class_exists('Stein_Kit_About_Widget') && class_exists('WP_Widget'))
         /**
          * Widget default args.
          * 
-         * @since  1.0.0
+         * @since  1.0
          * @access protected
          * @return void
          */
@@ -103,7 +103,7 @@ if (! class_exists('Stein_Kit_About_Widget') && class_exists('WP_Widget'))
         /**
          * Update widget backend settings.
          * 
-         * @since  1.0.0
+         * @since  1.0
          * @access protected
          * @param  array $new
          * @param  array $instance
@@ -120,7 +120,7 @@ if (! class_exists('Stein_Kit_About_Widget') && class_exists('WP_Widget'))
         /**
          * Outputs the settings update form.
          * 
-         * @since  1.0.0
+         * @since  1.0
          * @access protected
          * @param  array $instance
          * @return void
@@ -148,7 +148,7 @@ if (! class_exists('Stein_Kit_About_Widget') && class_exists('WP_Widget'))
         /**
          * Echoes the widget content.
          * 
-         * @since  1.0.0
+         * @since  1.0
          * @access protected
          * @param  array $args
          * @param  array $instance
@@ -219,7 +219,7 @@ if (! class_exists('Stein_Kit_About_Widget') && class_exists('WP_Widget'))
         /**
          * Outputs the settings update form.
          * 
-         * @since  1.0.0
+         * @since  1.0
          * @access protected
          * @param  array $instance
          * @return void
@@ -239,7 +239,7 @@ if (! class_exists('Stein_Kit_About_Widget') && class_exists('WP_Widget'))
  * Register the widget.
  *
  * @package Stein Kit
- * @since   1.0.0
+ * @since   1.0
  */
 add_action('widgets_init', function () {
     register_widget('Stein_Kit_About_Widget');

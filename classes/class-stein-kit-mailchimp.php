@@ -3,7 +3,7 @@
  * Mailchimp class.
  *
  * @package Stein Kit
- * @since   1.0.0
+ * @since   1.0
  */
 
 defined('ABSPATH') or die('Cheatin\' Uh?');
@@ -15,7 +15,7 @@ if (! class_exists('Stein_Kit_Mailchimp'))
         /**
          * Unique identifier.
          * 
-         * @since  1.0.0
+         * @since  1.0
          * @access protected
          * @var    string
          */
@@ -24,7 +24,7 @@ if (! class_exists('Stein_Kit_Mailchimp'))
         /**
          * Base API url.
          * 
-         * @since  1.0.0
+         * @since  1.0
          * @access protected
          * @var    string
          */
@@ -33,7 +33,7 @@ if (! class_exists('Stein_Kit_Mailchimp'))
         /**
          * Mailchimp API key.
          * 
-         * @since  1.0.0
+         * @since  1.0
          * @access protected
          * @var    string
          */
@@ -42,7 +42,7 @@ if (! class_exists('Stein_Kit_Mailchimp'))
         /**
          * The class constructor.
          * 
-         * @since  1.0.0
+         * @since  1.0
          * @access public
          * @return void
          */
@@ -67,7 +67,7 @@ if (! class_exists('Stein_Kit_Mailchimp'))
         /**
          * Add options page.
          * 
-         * @since  1.0.0
+         * @since  1.0
          * @access public
          * @return void
          */
@@ -85,7 +85,7 @@ if (! class_exists('Stein_Kit_Mailchimp'))
         /**
          * Register settings.
          * 
-         * @since  1.0.0
+         * @since  1.0
          * @access public
          * @return void
          */
@@ -116,7 +116,7 @@ if (! class_exists('Stein_Kit_Mailchimp'))
         /**
          * Sanitize form input.
          * 
-         * @since  1.0.0
+         * @since  1.0
          * @access public
          * @param array $input
          * @return void
@@ -139,7 +139,7 @@ if (! class_exists('Stein_Kit_Mailchimp'))
         /**
          * Options page template.
          * 
-         * @since  1.0.0
+         * @since  1.0
          * @access public
          * @return void
          */
@@ -171,7 +171,7 @@ if (! class_exists('Stein_Kit_Mailchimp'))
         /**
          * API Key field template.
          * 
-         * @since  1.0.0
+         * @since  1.0
          * @access public
          * @return void
          */
@@ -197,7 +197,7 @@ if (! class_exists('Stein_Kit_Mailchimp'))
         /**
          * Make a request
          * 
-         * @since  1.0.0
+         * @since  1.0
          * @access public
          * @param  string  $endpoint
          * @param  array   $query
@@ -228,7 +228,7 @@ if (! class_exists('Stein_Kit_Mailchimp'))
         /**
          * Get lists.
          * 
-         * @since  1.0.0
+         * @since  1.0
          * @access public
          * @return void
          */
@@ -259,7 +259,7 @@ if (! class_exists('Stein_Kit_Mailchimp'))
         /**
          * Clean up transients.
          * 
-         * @since  1.0.0
+         * @since  1.0
          * @access public
          * @return void
          */
@@ -276,7 +276,7 @@ new Stein_Kit_Mailchimp();
  * Get MailChimp lists.
  *
  * @package Incredibbble
- * @since   1.0.0
+ * @since   1.0
  */
 if (! function_exists('stein_kit_mailchimp_lists')) {
     function stein_kit_mailchimp_lists($id = null) {

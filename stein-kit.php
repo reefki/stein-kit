@@ -3,7 +3,7 @@
  * Plugin Name: Stein Kit
  * Plugin URI: 
  * Description: The essential plugin for Stein theme.
- * Version: 1.0.0
+ * Version: 1.0
  * Author: Rifki
  */
 
@@ -17,7 +17,7 @@ if (! class_exists('Stein_Kit')) {
         /**
          * Self cached instance.
          * 
-         * @since  1.0.0
+         * @since  1.0
          * @access protected
          * @var    self
          */
@@ -102,7 +102,7 @@ if (! class_exists('Stein_Kit')) {
         /**
          * Returns self cached instance or build new instance if undefined.
          * 
-         * @since  1.0.0
+         * @since  1.0
          * @access public
          * @return self
          */
@@ -120,7 +120,7 @@ if (! class_exists('Stein_Kit')) {
 /**
  * Get option
  *
- * @since 1.0.0
+ * @since 1.0
  */
 if (! function_exists('stein_kit_get_option')) {
     function stein_kit_get_option($key, $default = null) {
@@ -141,7 +141,7 @@ if (! function_exists('stein_kit_get_option')) {
 /**
  * Plugin Activation.
  * 
- * @since 1.0.0
+ * @since 1.0
  * @return void
  */
 function stein_kit_activated() {
@@ -153,7 +153,7 @@ register_activation_hook(__FILE__, 'stein_kit_activated');
 /**
  * Plugin Deactivation.
  * 
- * @since 1.0.0
+ * @since 1.0
  * @return void
  */
 function stein_kit_deactivated() {
@@ -165,7 +165,7 @@ register_deactivation_hook(__FILE__, 'stein_kit_deactivated');
 /**
  * Run the plugin.
  *
- * @since 1.0.0
+ * @since 1.0
  */
 if (! function_exists('stein_kit')) {
     function stein_kit() {
