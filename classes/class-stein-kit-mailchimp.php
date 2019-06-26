@@ -8,9 +8,9 @@
 
 defined('ABSPATH') or die('Cheatin\' Uh?');
 
-if (! class_exists('Stein_Toolkit_Mailchimp'))
+if (! class_exists('Stein_Kit_Mailchimp'))
 {
-    class Stein_Toolkit_Mailchimp
+    class Stein_Kit_Mailchimp
     {
         /**
          * Unique identifier.
@@ -270,7 +270,7 @@ if (! class_exists('Stein_Toolkit_Mailchimp'))
     }
 }
 
-new Stein_Toolkit_Mailchimp();
+new Stein_Kit_Mailchimp();
 
 /**
  * Get MailChimp lists.

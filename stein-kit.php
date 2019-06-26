@@ -11,8 +11,8 @@ if (! defined('ABSPATH')) {
 	exit;
 }
 
-if (! class_exists('Stein_Toolkit')) {
-    final class Stein_Toolkit
+if (! class_exists('Stein_Kit')) {
+    final class Stein_Kit
     {
         /**
          * Self cached instance.
@@ -169,7 +169,7 @@ register_deactivation_hook(__FILE__, 'stein_kit_deactivated');
  */
 if (! function_exists('stein_kit')) {
     function stein_kit() {
-        return Stein_Toolkit::instance();
+        return Stein_Kit::instance();
     }
 }
 

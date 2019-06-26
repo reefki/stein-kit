@@ -8,9 +8,9 @@
 
 defined('ABSPATH') or die('Cheatin\' Uh?');
 
-if (! class_exists('Stein_Toolkit_Instagram'))
+if (! class_exists('Stein_Kit_Instagram'))
 {
-    final class Stein_Toolkit_Instagram
+    final class Stein_Kit_Instagram
     {
         protected $username;
 
@@ -185,4 +185,4 @@ if (! class_exists('Stein_Toolkit_Instagram'))
     }
 }
 
-// print_r((new Stein_Toolkit_Instagram('instagram'))->posts());
+// print_r((new Stein_Kit_Instagram('instagram'))->posts());

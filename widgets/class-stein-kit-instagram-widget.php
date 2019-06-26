@@ -8,9 +8,9 @@
 
 defined('ABSPATH') or die('Cheatin\' Uh?');
 
-if (! class_exists('Stein_Toolkit_Instagram_Widget') && class_exists('WP_Widget'))
+if (! class_exists('Stein_Kit_Instagram_Widget') && class_exists('WP_Widget'))
 {
-    class Stein_Toolkit_Instagram_Widget extends WP_Widget
+    class Stein_Kit_Instagram_Widget extends WP_Widget
     {
         /**
          * The class constructor.
@@ -177,7 +177,7 @@ if (! class_exists('Stein_Toolkit_Instagram_Widget') && class_exists('WP_Widget'
                 echo apply_filters('after_title', $args['after_title'], $instance, $this->id_base);
             }
 
-            $posts = (new Stein_Toolkit_Instagram($instance['username']))->posts();
+            $posts = (new Stein_Kit_Instagram($instance['username']))->posts();
             $button_text = $instance['button_text'];
 
             if ($button_text && ! empty($instance['button_icon'])) {
@@ -227,5 +227,5 @@ if (! class_exists('Stein_Toolkit_Instagram_Widget') && class_exists('WP_Widget'
  * @since   1.0.0
  */
 add_action('widgets_init', function () {
-    register_widget('Stein_Toolkit_Instagram_Widget');
+    register_widget('Stein_Kit_Instagram_Widget');
 });

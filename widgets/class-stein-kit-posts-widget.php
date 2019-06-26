@@ -8,9 +8,9 @@
 
 defined('ABSPATH') or die('Cheatin\' Uh?');
 
-if (! class_exists('Stein_Toolkit_Posts_Widget') && class_exists('WP_Widget'))
+if (! class_exists('Stein_Kit_Posts_Widget') && class_exists('WP_Widget'))
 {
-    final class Stein_Toolkit_Posts_Widget extends WP_Widget
+    final class Stein_Kit_Posts_Widget extends WP_Widget
     {
         /**
          * The class constructor.
@@ -246,5 +246,5 @@ if (! class_exists('Stein_Toolkit_Posts_Widget') && class_exists('WP_Widget'))
  * @since   1.0.0
  */
 add_action('widgets_init', function() {
-    register_widget('Stein_Toolkit_Posts_Widget');
+    register_widget('Stein_Kit_Posts_Widget');
 });
