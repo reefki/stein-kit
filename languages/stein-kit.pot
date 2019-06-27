@@ -37,6 +37,10 @@ msgstr ""
 msgid "Get your API key here."
 msgstr ""
 
+#: ../stein-kit.php:196
+msgid "Check out this article"
+msgstr ""
+
 #: ../widgets/class-stein-kit-about-widget.php:26
 msgid "About"
 msgstr ""
