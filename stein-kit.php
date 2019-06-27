@@ -159,7 +159,7 @@ if (! function_exists('stein_kit_share_links')) {
 
         $config = array(
             'facebook' => array(
-                'label' => esc_html__('Facebook', 'stein'),
+                'label' => 'Facebook',
                 'icon'  => '<i class="si si-facebook"></i>',
                 'url'   => 'https://www.facebook.com/sharer/sharer.php',
                 'query' => array(
@@ -168,7 +168,7 @@ if (! function_exists('stein_kit_share_links')) {
                 )
             ),
             'twitter' => array(
-                'label' => esc_html__('Twitter', 'stein'),
+                'label' => 'Twitter',
                 'icon'  => '<i class="si si-twitter"></i>',
                 'url'   => 'https://twitter.com/intent/tweet',
                 'query' => array(
@@ -177,7 +177,7 @@ if (! function_exists('stein_kit_share_links')) {
                 )
              ),
             'linkedin' => array(
-                'label' => esc_html__('Linkedin', 'stein'),
+                'label' => 'Linkedin',
                 'icon'  => '<i class="si si-linkedin"></i>',
                 'url'   => 'https://www.linkedin.com/shareArticle',
                 'query' => array(
@@ -187,13 +187,13 @@ if (! function_exists('stein_kit_share_links')) {
                 )
              ),
             'email' => array(
-                'label' => esc_html__('Email', 'stein'),
+                'label' => 'Email',
                 'icon'  => '<i class="si si-envelope"></i>',
                 'url'   => 'mailto:',
                 'query' => array(
                     'subject' => $args['text'],
                     'body'    => wp_sprintf('%1$s: %2$s',
-                        esc_html__('Check out this article', 'stein'),
+                        esc_html__('Check out this article', 'stein-kit'),
                         esc_url($args['url'])
                     )
                 )
