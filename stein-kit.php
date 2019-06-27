@@ -139,6 +139,80 @@ if (! function_exists('stein_kit_get_option')) {
 }
 
 /**
+ * Post share links.
+ *
+ * @package Stein
+ * @since 1.0
+ * @param   array $args
+ * @return  string
+ */
+if (! function_exists('stein_kit_share_links')) {
+    function stein_kit_share_links($args)
+    {
+        $links = array();
+
+        $args = wp_parse_args($args, array(
+            'url' => '',
+            'text' => '',
+            'media' => '',
+        ));
+
+        $config = array(
+            'facebook' => array(
+                'label' => esc_html__('Facebook', 'stein'),
+                'icon'  => '<i class="si si-facebook"></i>',
+                'url'   => 'https://www.facebook.com/sharer/sharer.php',
+                'query' => array(
+                    'u' => $args['url'],
+                    't' => $args['text']
+                )
+            ),
+            'twitter' => array(
+                'label' => esc_html__('Twitter', 'stein'),
+                'icon'  => '<i class="si si-twitter"></i>',
+                'url'   => 'https://twitter.com/intent/tweet',
+                'query' => array(
+                    'url'  => $args['url'],
+                    'text' => $args['text']
+                )
+             ),
+            'linkedin' => array(
+                'label' => esc_html__('Linkedin', 'stein'),
+                'icon'  => '<i class="si si-linkedin"></i>',
+                'url'   => 'https://www.linkedin.com/shareArticle',
+                'query' => array(
+                    'mini'  => true,
+                    'url'   => $args['url'],
+                    'title' => $args['text'],
+                )
+             ),
+            'email' => array(
+                'label' => esc_html__('Email', 'stein'),
+                'icon'  => '<i class="si si-envelope"></i>',
+                'url'   => 'mailto:',
+                'query' => array(
+                    'subject' => $args['text'],
+                    'body'    => wp_sprintf('%1$s: %2$s',
+                        esc_html__('Check out this article', 'stein'),
+                        esc_url($args['url'])
+                    )
+                )
+             )
+        );
+
+        foreach ($config as $key => $value) {
+            $links[$key] = array(
+                'label' => $value['label'],
+                'icon' => $value['icon'],
+                'url' => $value['url'] . '?' . http_build_query($value['query']),
+            );
+        }
+
+        return $links;
+    }
+}
+
+/**
  * Plugin Activation.
  * 
  * @since 1.0
