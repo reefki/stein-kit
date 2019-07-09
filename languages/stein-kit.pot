@@ -13,200 +13,202 @@ msgstr ""
 "X-Poedit-SourceCharset: UTF-8\n"
 "Plural-Forms: nplurals=2; plural=(n != 1);\n"
 
-#: ../classes/class-stein-kit-mailchimp.php:77, ../classes/class-stein-kit-mailchimp.php:150
+#: ../classes/class-stein-kit-mailchimp.php:79, ../classes/class-stein-kit-mailchimp.php:149
 msgid "MailChimp Settings"
 msgstr ""
 
-#: ../classes/class-stein-kit-mailchimp.php:78
+#: ../classes/class-stein-kit-mailchimp.php:80
 msgid "MailChimp"
 msgstr ""
 
-#: ../classes/class-stein-kit-mailchimp.php:102
+#: ../classes/class-stein-kit-mailchimp.php:103
 msgid "API Settings"
 msgstr ""
 
-#: ../classes/class-stein-kit-mailchimp.php:109
+#: ../classes/class-stein-kit-mailchimp.php:110
 msgid "API Key"
 msgstr ""
 
-#: ../classes/class-stein-kit-mailchimp.php:191
+#: ../classes/class-stein-kit-mailchimp.php:195
 msgid "The API key for connecting with your Mailchimp account."
 msgstr ""
 
-#: ../classes/class-stein-kit-mailchimp.php:192
+#: ../classes/class-stein-kit-mailchimp.php:196
 msgid "Get your API key here."
 msgstr ""
 
-#: ../stein-kit.php:196
+#: ../stein-kit.php:204
 msgid "Check out this article"
 msgstr ""
 
-#: ../widgets/class-stein-kit-about-widget.php:26
+#: ../widgets/class-stein-kit-about-widget.php:31
 msgid "About"
 msgstr ""
 
-#: ../widgets/class-stein-kit-about-widget.php:28
+#: ../widgets/class-stein-kit-about-widget.php:34
 msgid "Displays about."
 msgstr ""
 
-#: ../widgets/class-stein-kit-about-widget.php:47
+#: ../widgets/class-stein-kit-about-widget.php:53
 msgid "Logo"
 msgstr ""
 
-#: ../widgets/class-stein-kit-about-widget.php:54
+#: ../widgets/class-stein-kit-about-widget.php:60
 msgid "Image"
 msgstr ""
 
-#: ../widgets/class-stein-kit-about-widget.php:62
+#: ../widgets/class-stein-kit-about-widget.php:68
 msgid "Width"
 msgstr ""
 
-#: ../widgets/class-stein-kit-about-widget.php:69
+#: ../widgets/class-stein-kit-about-widget.php:75
 msgid "Height"
 msgstr ""
 
-#: ../widgets/class-stein-kit-about-widget.php:78
+#: ../widgets/class-stein-kit-about-widget.php:84
 msgid "Text"
 msgstr ""
 
-#: ../widgets/class-stein-kit-about-widget.php:85
+#: ../widgets/class-stein-kit-about-widget.php:91
 msgid "Show social links?"
 msgstr ""
 
-#: ../widgets/class-stein-kit-about-widget.php:134, ../widgets/class-stein-kit-instagram-widget.php:108, ../widgets/class-stein-kit-mailchimp-form-widget.php:85, ../widgets/class-stein-kit-posts-widget.php:100, ../widgets/class-stein-kit-social-widget.php:94
+#: ../widgets/class-stein-kit-about-widget.php:139, ../widgets/class-stein-kit-instagram-widget.php:116, ../widgets/class-stein-kit-mailchimp-form-widget.php:93, ../widgets/class-stein-kit-posts-widget.php:110, ../widgets/class-stein-kit-social-widget.php:103
 msgid "Title:"
 msgstr ""
 
-#: ../widgets/class-stein-kit-about-widget.php:143
+#: ../widgets/class-stein-kit-about-widget.php:149
 msgid "Please install Advanced Custom Fields plugin to use this widget."
 msgstr ""
 
-#: ../widgets/class-stein-kit-instagram-widget.php:24
+#: ../widgets/class-stein-kit-instagram-widget.php:29
 msgid "Instagram"
 msgstr ""
 
-#: ../widgets/class-stein-kit-instagram-widget.php:26
+#: ../widgets/class-stein-kit-instagram-widget.php:32
 msgid "Displays Instagram feed by username."
 msgstr ""
 
-#: ../widgets/class-stein-kit-instagram-widget.php:103, ../widgets/class-stein-kit-social-widget.php:89
+#. translators: %s: column
+#. translators: %s: column
+#: ../widgets/class-stein-kit-instagram-widget.php:111, ../widgets/class-stein-kit-social-widget.php:98
 msgid "%s column"
 msgid_plural "%s columns"
 msgstr[0] ""
 msgstr[1] ""
 
-#: ../widgets/class-stein-kit-instagram-widget.php:116
+#: ../widgets/class-stein-kit-instagram-widget.php:124
 msgid "Username:"
 msgstr ""
 
-#: ../widgets/class-stein-kit-instagram-widget.php:124, ../widgets/class-stein-kit-posts-widget.php:136, ../widgets/class-stein-kit-social-widget.php:116
+#: ../widgets/class-stein-kit-instagram-widget.php:132, ../widgets/class-stein-kit-posts-widget.php:146, ../widgets/class-stein-kit-social-widget.php:125
 msgid "Limit:"
 msgstr ""
 
-#: ../widgets/class-stein-kit-instagram-widget.php:132
+#: ../widgets/class-stein-kit-instagram-widget.php:140
 msgid "Columns:"
 msgstr ""
 
-#: ../widgets/class-stein-kit-instagram-widget.php:146
+#: ../widgets/class-stein-kit-instagram-widget.php:154
 msgid "Button text:"
 msgstr ""
 
-#: ../widgets/class-stein-kit-instagram-widget.php:154
+#: ../widgets/class-stein-kit-instagram-widget.php:162
 msgid "Enable button icon?"
 msgstr ""
 
-#: ../widgets/class-stein-kit-instagram-widget.php:214
+#: ../widgets/class-stein-kit-instagram-widget.php:223
 msgid "No data available."
 msgstr ""
 
-#: ../widgets/class-stein-kit-mailchimp-form-widget.php:24
+#: ../widgets/class-stein-kit-mailchimp-form-widget.php:29
 msgid "Mailchimp Form"
 msgstr ""
 
-#: ../widgets/class-stein-kit-mailchimp-form-widget.php:26
+#: ../widgets/class-stein-kit-mailchimp-form-widget.php:32
 msgid "Displays Mailchimp sign-up form."
 msgstr ""
 
-#: ../widgets/class-stein-kit-mailchimp-form-widget.php:44
+#: ../widgets/class-stein-kit-mailchimp-form-widget.php:52
 msgid "I agree to the terms & conditions"
 msgstr ""
 
-#: ../widgets/class-stein-kit-mailchimp-form-widget.php:94
+#: ../widgets/class-stein-kit-mailchimp-form-widget.php:102
 msgid "List:"
 msgstr ""
 
-#: ../widgets/class-stein-kit-mailchimp-form-widget.php:98
+#: ../widgets/class-stein-kit-mailchimp-form-widget.php:106
 msgid "Select list"
 msgstr ""
 
-#: ../widgets/class-stein-kit-mailchimp-form-widget.php:109
+#: ../widgets/class-stein-kit-mailchimp-form-widget.php:117
 msgid "Text:"
 msgstr ""
 
-#: ../widgets/class-stein-kit-mailchimp-form-widget.php:115
+#: ../widgets/class-stein-kit-mailchimp-form-widget.php:123
 msgid "Terms URL:"
 msgstr ""
 
-#: ../widgets/class-stein-kit-mailchimp-form-widget.php:123
+#: ../widgets/class-stein-kit-mailchimp-form-widget.php:131
 msgid "Terms Label:"
 msgstr ""
 
-#: ../widgets/class-stein-kit-posts-widget.php:94
+#: ../widgets/class-stein-kit-posts-widget.php:103
 msgid "Square"
 msgstr ""
 
-#: ../widgets/class-stein-kit-posts-widget.php:95
+#: ../widgets/class-stein-kit-posts-widget.php:104
 msgid "Circle"
 msgstr ""
 
-#: ../widgets/class-stein-kit-posts-widget.php:108
+#: ../widgets/class-stein-kit-posts-widget.php:118
 msgid "Image Style:"
 msgstr ""
 
-#: ../widgets/class-stein-kit-posts-widget.php:122
+#: ../widgets/class-stein-kit-posts-widget.php:132
 msgid "Category:"
 msgstr ""
 
-#: ../widgets/class-stein-kit-posts-widget.php:126
+#: ../widgets/class-stein-kit-posts-widget.php:136
 msgid "All"
 msgstr ""
 
-#: ../widgets/class-stein-kit-posts-widget.php:145
+#: ../widgets/class-stein-kit-posts-widget.php:155
 msgid "Order by:"
 msgstr ""
 
-#: ../widgets/class-stein-kit-posts-widget.php:159
+#: ../widgets/class-stein-kit-posts-widget.php:169
 msgid "Sort:"
 msgstr ""
 
-#: ../widgets/class-stein-kit-posts-widget.php:172
+#: ../widgets/class-stein-kit-posts-widget.php:182
 msgid "Offset:"
 msgstr ""
 
-#: ../widgets/class-stein-kit-social-widget.php:24
+#: ../widgets/class-stein-kit-social-widget.php:29
 msgid "Social Links"
 msgstr ""
 
-#: ../widgets/class-stein-kit-social-widget.php:26
+#: ../widgets/class-stein-kit-social-widget.php:32
 msgid "Displays links to your social accounts."
 msgstr ""
 
-#: ../widgets/class-stein-kit-social-widget.php:83
+#: ../widgets/class-stein-kit-social-widget.php:91
 msgid "Default"
 msgstr ""
 
-#: ../widgets/class-stein-kit-social-widget.php:84
+#: ../widgets/class-stein-kit-social-widget.php:92
 msgid "Colored"
 msgstr ""
 
-#: ../widgets/class-stein-kit-social-widget.php:85
+#: ../widgets/class-stein-kit-social-widget.php:93
 msgid "Colored Background"
 msgstr ""
 
-#: ../widgets/class-stein-kit-social-widget.php:103
+#: ../widgets/class-stein-kit-social-widget.php:112
 msgid "Style:"
 msgstr ""
 
-#: ../widgets/class-stein-kit-social-widget.php:191
+#: ../widgets/class-stein-kit-social-widget.php:200
 msgid "No social links available."
 msgstr ""
