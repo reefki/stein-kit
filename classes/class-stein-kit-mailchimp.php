@@ -1,285 +1,294 @@
 <?php
 /**
- * Mailchimp class.
+ * Mailchimp.
  *
  * @package Stein Kit
  * @since   1.0
  */
 
-defined('ABSPATH') or die('Cheatin\' Uh?');
+defined( 'ABSPATH' ) || die( 'Cheatin\' Uh?' );
 
-if (! class_exists('Stein_Kit_Mailchimp'))
-{
-    class Stein_Kit_Mailchimp
-    {
-        /**
-         * Unique identifier.
-         * 
-         * @since  1.0
-         * @access protected
-         * @var    string
-         */
-        protected $id = 'stein_kit_mailchimp';
+if ( ! class_exists( 'Stein_Kit_Mailchimp' ) ) {
+	/**
+	 * Mailchimp class.
+	 *
+	 * @since 1.0
+	 */
+	class Stein_Kit_Mailchimp {
 
-        /**
-         * Base API url.
-         * 
-         * @since  1.0
-         * @access protected
-         * @var    string
-         */
-        protected $api_url = 'https://%s.api.mailchimp.com/3.0/';
+		/**
+		 * Unique identifier.
+		 *
+		 * @since  1.0
+		 * @access protected
+		 * @var    string
+		 */
+		protected $id = 'stein_kit_mailchimp';
 
-        /**
-         * Mailchimp API key.
-         * 
-         * @since  1.0
-         * @access protected
-         * @var    string
-         */
-        protected $options;
+		/**
+		 * Base API url.
+		 *
+		 * @since  1.0
+		 * @access protected
+		 * @var    string
+		 */
+		protected $api_url = 'https://%s.api.mailchimp.com/3.0/';
 
-        /**
-         * The class constructor.
-         * 
-         * @since  1.0
-         * @access public
-         * @return void
-         */
-        public function __construct()
-        {
-            $this->options = get_option($this->id);
+		/**
+		 * Mailchimp API key.
+		 *
+		 * @since  1.0
+		 * @access protected
+		 * @var    string
+		 */
+		protected $options;
 
-            if (! empty($this->options['api_key'])) {
-                $api_key_parts = array_map('trim', explode('-', $this->options['api_key']));
+		/**
+		 * The class constructor.
+		 *
+		 * @since  1.0
+		 * @access public
+		 * @return void
+		 */
+		public function __construct() {
+			$this->options = get_option( $this->id );
 
-                if (is_array($api_key_parts) && ! empty($api_key_parts)) {
-                    $this->api_url = sprintf($this->api_url, end($api_key_parts));
-                }
-            }
+			if ( ! empty( $this->options['api_key'] ) ) {
+				$api_key_parts = array_map( 'trim', explode( '-', $this->options['api_key'] ) );
 
-            add_filter('stein_kit_mailchimp_lists', array($this, 'lists'), 10, 2);
+				if ( is_array( $api_key_parts ) && ! empty( $api_key_parts ) ) {
+					$this->api_url = sprintf( $this->api_url, end( $api_key_parts ) );
+				}
+			}
 
-            add_action('admin_menu', array($this, 'add_options_page'));
-            add_action('admin_init', array($this, 'register_setting'));
-        }
+			add_filter( 'stein_kit_mailchimp_lists', array( $this, 'lists' ), 10, 2 );
 
-        /**
-         * Add options page.
-         * 
-         * @since  1.0
-         * @access public
-         * @return void
-         */
-        public function add_options_page()
-        {
-            add_options_page(
-                esc_html__('MailChimp Settings', 'stein-kit'), 
-                esc_html__('MailChimp', 'stein-kit'), 
-                'manage_options', 
-                $this->id, 
-                array($this, 'options_page_template')
-            );
-        }
+			add_action( 'admin_menu', array( $this, 'add_options_page' ) );
+			add_action( 'admin_init', array( $this, 'register_setting' ) );
+		}
 
-        /**
-         * Register settings.
-         * 
-         * @since  1.0
-         * @access public
-         * @return void
-         */
-        public function register_setting()
-        {
-            register_setting(
-                $this->id,
-                $this->id,
-                array($this, 'sanitize')
-            );
+		/**
+		 * Add options page.
+		 *
+		 * @since  1.0
+		 * @access public
+		 * @return void
+		 */
+		public function add_options_page() {
+			add_options_page(
+				esc_html__( 'MailChimp Settings', 'stein-kit' ),
+				esc_html__( 'MailChimp', 'stein-kit' ),
+				'manage_options',
+				$this->id,
+				array( $this, 'options_page_template' )
+			);
+		}
 
-            add_settings_section(
-                "{$this->id}_api_settings",
-                esc_html__('API Settings', 'stein-kit'),
-                false,
-                $this->id
-            ); 
+		/**
+		 * Register settings.
+		 *
+		 * @since  1.0
+		 * @access public
+		 * @return void
+		 */
+		public function register_setting() {
+			register_setting(
+				$this->id,
+				$this->id,
+				array( $this, 'sanitize' )
+			);
 
-            add_settings_field(
-                "{$this->id}_api_key",
-                esc_html__('API Key', 'stein-kit'),
-                array($this, 'field_api_key_template'), 
-                $this->id, 
-                "{$this->id}_api_settings"
-            );   
-        }
+			add_settings_section(
+				"{$this->id}_api_settings",
+				esc_html__( 'API Settings', 'stein-kit' ),
+				false,
+				$this->id
+			);
 
-        /**
-         * Sanitize form input.
-         * 
-         * @since  1.0
-         * @access public
-         * @param array $input
-         * @return void
-         */
-        public function sanitize($input)
-        {
-            if (isset($_POST['clear'])) {
-                $this->cleanup();
-            }
+			add_settings_field(
+				"{$this->id}_api_key",
+				esc_html__( 'API Key', 'stein-kit' ),
+				array( $this, 'field_api_key_template' ),
+				$this->id,
+				"{$this->id}_api_settings"
+			);
+		}
 
-            $values = array();
-            
-            if (isset($input['api_key'])) {
-                $values['api_key'] = sanitize_text_field($input['api_key']);
-            }
+		/**
+		 * Sanitize form input.
+		 *
+		 * @since  1.0
+		 * @access public
+		 * @param  array $input Imput data to sanitize.
+		 * @return array
+		 */
+		public function sanitize( $input ) {
+			if ( isset( $_POST['clear'] ) ) {
+				$this->cleanup();
+			}
 
-            return $values;
-        }
+			$values = array();
 
-        /**
-         * Options page template.
-         * 
-         * @since  1.0
-         * @access public
-         * @return void
-         */
-        public function options_page_template()
-        {
-            ?>
-            <div class="wrap">
-                <h1><?php esc_html_e('MailChimp Settings', 'stein-kit'); ?></h1>
+			if ( isset( $input['api_key'] ) ) {
+				$values['api_key'] = sanitize_text_field( $input['api_key'] );
+			}
 
-                <form method="post" action="options.php">
-                    <?php
-                    settings_fields($this->id);
-                    do_settings_sections($this->id);
-                    ?>
+			return $values;
+		}
 
-                    <p class="submit">
-                        <?php
-                        submit_button(esc_html__('Save Changes'), 'primary', 'submit', false);
-                        submit_button(esc_html__('Clear Cache'), 'delete', 'clear', false, array(
-                            'style' => 'margin-left: 1rem;'
-                        ));
-                        ?>
-                    </p>
-                </form>
-            </div>
-            <?php
-        }
+		/**
+		 * Options page template.
+		 *
+		 * @since  1.0
+		 * @access public
+		 * @return void
+		 */
+		public function options_page_template() {
+			?>
+			<div class="wrap">
+				<h1><?php esc_html_e( 'MailChimp Settings', 'stein-kit' ); ?></h1>
 
-        /**
-         * API Key field template.
-         * 
-         * @since  1.0
-         * @access public
-         * @return void
-         */
-        public function field_api_key_template()
-        {
-            $value = isset(($this->options['api_key'])) ? ($this->options['api_key']) : null;
-            
-            printf(
-                '<input type="text" id="%1$s" name="%2$s[%1$s]" value="%3$s">',
-                'api_key',
-                $this->id,
-                $value
-            );
-            
-            printf(
-                '<p class="help">%1$s <a href="%3$s" target="_blank">%2$s</a></p>',
-                esc_html__('The API key for connecting with your Mailchimp account.', 'stein-kit'),
-                esc_html__('Get your API key here.', 'stein-kit'),
-                esc_url('https://admin.mailchimp.com/account/api')
-            );
-        }
+				<form method="post" action="options.php">
+					<?php
+					settings_fields( $this->id );
+					do_settings_sections( $this->id );
+					?>
 
-        /**
-         * Make a request
-         * 
-         * @since  1.0
-         * @access public
-         * @param  string  $endpoint
-         * @param  array   $query
-         * @param  boolean $json
-         * @return array
-         */
-        public function request($endpoint, $query = array(), $json = true)
-        {
-            if (empty($this->options['api_key'])) {
-                return;
-            }
+					<p class="submit">
+						<?php
+						submit_button( esc_html__( 'Save Changes' ), 'primary', 'submit', false );
+						submit_button(
+							esc_html__( 'Clear Cache' ),
+							'delete',
+							'clear',
+							false,
+							array(
+								'style' => 'margin-left: 1rem;',
+							)
+						);
+						?>
+					</p>
+				</form>
+			</div>
+			<?php
+		}
 
-            $url = add_query_arg($query, $this->api_url . $endpoint);
+		/**
+		 * API Key field template.
+		 *
+		 * @since  1.0
+		 * @access public
+		 * @return void
+		 */
+		public function field_api_key_template() {
+			$value = isset( ( $this->options['api_key'] ) ) ? ( $this->options['api_key'] ) : null;
 
-            $response = wp_safe_remote_get($url, array(
-                'headers' => array('Authorization' => 'apikey ' . $this->options['api_key'])
-            ));
+			printf(
+				'<input type="text" id="%1$s" name="%2$s[%1$s]" value="%3$s">',
+				'api_key',
+				esc_attr( $this->id ),
+				esc_attr( $value )
+			);
 
-            if (! is_wp_error($response) && (wp_remote_retrieve_response_code($response) == 200)) {
-                if ($json) {
-                    return json_decode(wp_remote_retrieve_body($response), true);
-                }
+			printf(
+				'<p class="help">%1$s <a href="%3$s" target="_blank">%2$s</a></p>',
+				esc_html__( 'The API key for connecting with your Mailchimp account.', 'stein-kit' ),
+				esc_html__( 'Get your API key here.', 'stein-kit' ),
+				esc_url( 'https://admin.mailchimp.com/account/api' )
+			);
+		}
 
-                return wp_remote_retrieve_body($response);
-            }
-        }
+		/**
+		 * Make a request
+		 *
+		 * @since  1.0
+		 * @access public
+		 * @param  string  $endpoint The API endpoint.
+		 * @param  array   $query API query list.
+		 * @param  boolean $json Whether to return as JSON.
+		 * @return array
+		 */
+		public function request( $endpoint, $query = array(), $json = true ) {
+			if ( empty( $this->options['api_key'] ) ) {
+				return;
+			}
 
-        /**
-         * Get lists.
-         * 
-         * @since  1.0
-         * @access public
-         * @return void
-         */
-        public function lists($lists = array(), $id = null)
-        {
-            if ($cached = get_transient("{$this->id}_lists")) {
-                $lists = $cached;
-            } else {
-                $response = $this->request('lists');
-    
-                if ($response && ! empty($response['lists'])) {
-                    $lists = $response['lists'];
-                    set_transient("{$this->id}_lists", $lists, 1440 * 60);
-                }
-            }
+			$url = add_query_arg( $query, $this->api_url . $endpoint );
 
-            if (! is_null($id) && ! empty($lists)) {
-                foreach ($lists as $list) {
-                    if ($list['id'] === $id) {
-                        return $list;
-                    }
-                } 
-            }
+			$response = wp_safe_remote_get(
+				$url,
+				array(
+					'headers' => array( 'Authorization' => 'apikey ' . $this->options['api_key'] ),
+				)
+			);
 
-            return $lists;
-        }
+			if ( ! is_wp_error( $response ) && ( 200 === wp_remote_retrieve_response_code( $response ) ) ) {
+				if ( $json ) {
+					return json_decode( wp_remote_retrieve_body( $response ), true );
+				}
 
-        /**
-         * Clean up transients.
-         * 
-         * @since  1.0
-         * @access public
-         * @return void
-         */
-        public function cleanup()
-        {
-            delete_transient("{$this->id}_lists");
-        }
-    }
+				return wp_remote_retrieve_body( $response );
+			}
+		}
+
+		/**
+		 * Get lists.
+		 *
+		 * @since  1.0
+		 * @access public
+		 * @param  array  $lists Defined MailChimp list.
+		 * @param  string $id Expected list ID.
+		 * @return array
+		 */
+		public function lists( $lists = array(), $id = null ) {
+			$cached = get_transient( "{$this->id}_lists" );
+
+			if ( $cached ) {
+				$lists = $cached;
+			} else {
+				$response = $this->request( 'lists' );
+
+				if ( $response && ! empty( $response['lists'] ) ) {
+					$lists = $response['lists'];
+					set_transient( "{$this->id}_lists", $lists, 1440 * 60 );
+				}
+			}
+
+			if ( ! is_null( $id ) && ! empty( $lists ) ) {
+				foreach ( $lists as $list ) {
+					if ( $list['id'] === $id ) {
+						return $list;
+					}
+				}
+			}
+
+			return $lists;
+		}
+
+		/**
+		 * Clean up transients.
+		 *
+		 * @since  1.0
+		 * @access public
+		 * @return void
+		 */
+		public function cleanup() {
+			delete_transient( "{$this->id}_lists" );
+		}
+	}
 }
 
 new Stein_Kit_Mailchimp();
 
-/**
- * Get MailChimp lists.
- *
- * @package Incredibbble
- * @since   1.0
- */
-if (! function_exists('stein_kit_mailchimp_lists')) {
-    function stein_kit_mailchimp_lists($id = null) {
-        return apply_filters('stein_kit_mailchimp_lists', array(), $id);
-    }
+if ( ! function_exists( 'stein_kit_mailchimp_lists' ) ) {
+	/**
+	 * Get MailChimp lists.
+	 *
+	 * @since  1.0
+	 * @param  string $id Expected list id.
+	 * @return array
+	 */
+	function stein_kit_mailchimp_lists( $id = null ) {
+		return apply_filters( 'stein_kit_mailchimp_lists', array(), $id );
+	}
 }
