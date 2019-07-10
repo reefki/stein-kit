@@ -6,7 +6,7 @@
  * @since   1.0
  */
 
-defined( 'ABSPATH' ) || die( 'Cheatin\' Uh?' );
+defined( 'ABSPATH' ) || wp_die( 'Cheatin\' Uh?' );
 
 if ( ! class_exists( 'Stein_Kit_Mailchimp' ) ) {
 	/**
