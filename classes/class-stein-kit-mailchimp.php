@@ -181,7 +181,7 @@ if ( ! class_exists( 'Stein_Kit_Mailchimp' ) ) {
 		 * @return void
 		 */
 		public function field_api_key_template() {
-			$value = isset( ( $this->options['api_key'] ) ) ? ( $this->options['api_key'] ) : null;
+			$value = isset( $this->options['api_key'] ) ? $this->options['api_key'] : null;
 
 			printf(
 				'<input type="text" id="%1$s" name="%2$s[%1$s]" value="%3$s">',
