@@ -156,9 +156,9 @@ if ( ! class_exists( 'Stein_Kit_Mailchimp' ) ) {
 
 					<p class="submit">
 						<?php
-						submit_button( esc_html__( 'Save Changes' ), 'primary', 'submit', false );
+						submit_button( esc_html__( 'Save Changes', 'stein-kit' ), 'primary', 'submit', false );
 						submit_button(
-							esc_html__( 'Clear Cache' ),
+							esc_html__( 'Clear Cache', 'stein-kit' ),
 							'delete',
 							'clear',
 							false,
