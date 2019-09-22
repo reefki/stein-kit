@@ -26,10 +26,10 @@ if ( ! class_exists( 'Stein_Kit_Posts_Widget' ) && class_exists( 'WP_Widget' ) )
 		public function __construct() {
 			parent::__construct(
 				'stein_kit_posts',
-				esc_html__( 'Posts', 'sandstein' ),
+				esc_html__( 'Posts', 'stein-kit' ),
 				array(
 					'classname'   => 'widget_stein_kit_posts',
-					'description' => esc_html__( 'Displays your site\'s posts.', 'sandstein' ),
+					'description' => esc_html__( 'Displays your site\'s posts.', 'stein-kit' ),
 				)
 			);
 		}
