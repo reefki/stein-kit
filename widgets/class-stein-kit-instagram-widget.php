@@ -108,7 +108,7 @@ if ( ! class_exists( 'Stein_Kit_Instagram_Widget' ) && class_exists( 'WP_Widget'
 
 			foreach ( $columns as $key => $value ) {
 				/* translators: %s: column */
-				$columns[ $key ] = wp_sprintf( _n( '%s column', '%s columns', $key, 'stein-kit' ), $key );
+				$columns[ $key ] = wp_sprintf( _n( '%s column', '%s: columns', $key, 'stein-kit' ), $key );
 			}
 			?>
 				<p>
@@ -119,13 +119,15 @@ if ( ! class_exists( 'Stein_Kit_Instagram_Widget' ) && class_exists( 'WP_Widget'
 					<input id="<?php echo esc_attr( $this->get_field_id( 'title' ) ); ?>" class="widefat" name="<?php echo esc_attr( $this->get_field_name( 'title' ) ); ?>" type="text" value="<?php echo esc_attr( $instance['title'] ); ?>">
 				</p>
 
-				<p>
-					<label for="<?php echo esc_attr( $this->get_field_id( 'username' ) ); ?>">
-						<?php esc_html_e( 'Username:', 'stein-kit' ); ?>
-					</label>
+				<?php if ( ! stein_kit_instagram_get_option( 'access_token' ) ) : ?>
+					<p>
+						<label for="<?php echo esc_attr( $this->get_field_id( 'username' ) ); ?>">
+							<?php esc_html_e( 'Username:', 'stein-kit' ); ?>
+						</label>
 
-					<input id="<?php echo esc_attr( $this->get_field_id( 'username' ) ); ?>" class="widefat" name="<?php echo esc_attr( $this->get_field_name( 'username' ) ); ?>" type="text" value="<?php echo esc_attr( $instance['username'] ); ?>">
-				</p>
+						<input id="<?php echo esc_attr( $this->get_field_id( 'username' ) ); ?>" class="widefat" name="<?php echo esc_attr( $this->get_field_name( 'username' ) ); ?>" type="text" value="<?php echo esc_attr( $instance['username'] ); ?>">
+					</p>
+				<?php endif; ?>
 
 				<p>
 					<label for="<?php echo esc_attr( $this->get_field_id( 'limit' ) ); ?>">
@@ -186,35 +188,36 @@ if ( ! class_exists( 'Stein_Kit_Instagram_Widget' ) && class_exists( 'WP_Widget'
 				echo apply_filters( 'after_title', $args['after_title'], $instance, $this->id_base ); // phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped
 			}
 
-			$posts       = ( new Stein_Kit_Instagram( $instance['username'] ) )->posts();
+			$media       = stein_kit_instagram_get_media( $instance['username'] );
+			$user        = stein_kit_instagram_get_profile( $instance['username'] );
 			$button_text = $instance['button_text'];
 
 			if ( $button_text && ! empty( $instance['button_icon'] ) ) {
 				$button_text = "<i class=\"si si-instagram tw-mr-2\"></i>{$button_text}";
 			}
 
-			if ( ! empty( $posts ) ) {
-				$posts = array_slice( $posts, 0, $instance['limit'] );
+			if ( ! empty( $media ) ) {
+				$media = array_slice( $media, 0, $instance['limit'] );
 				?>
 					<ul class="instagram-items tw-list-reset tw-flex tw-flex-wrap tw-grid tw-grid-columns-<?php echo esc_attr( $instance['columns'] ); ?>" style="grid-gap: 8px;">
-						<?php foreach ( $posts as $post ) : ?>
+						<?php foreach ( $media as $item ) : ?>
 							<li class="instagram-item tw-flex-auto">
-								<a href="<?php echo esc_url( $post['url'] ); ?>" class="instagram-image tw-block tw-bg-alt tw-relative tw-aspect-ratio-1/1 hover_tw-opacity-85 tw-transition-opacity tw-transition-duration-200">
+								<a href="<?php echo esc_url( $item['link'] ); ?>" class="instagram-image tw-block tw-bg-alt tw-relative tw-aspect-ratio-1/1 hover_tw-opacity-85 tw-transition-opacity tw-transition-duration-200">
 									<?php
 									$srcset = array();
 
-									foreach ( $post['thumbnails'] as $width => $thumbnail ) {
-										$srcset[] = "{$thumbnail} {$width}w";
+									foreach ( $item['images'] as $thumbnail ) {
+										$srcset[] = $thumbnail['url'] . ' ' . $thumbnail['width'] . 'w';
 									}
 									?>
-									<img class="tw-object-cover tw-absolute tw-left-0 tw-top-0 tw-w-full tw-h-full lazyload" src="<?php echo esc_url( $post['thumbnails']['150'] ); ?>" data-srcset="<?php echo esc_attr( implode( ', ', $srcset ) ); ?>" sizes="auto" alt="<?php echo esc_attr( $post['id'] ); ?>">
+									<img class="tw-object-cover tw-absolute tw-left-0 tw-top-0 tw-w-full tw-h-full lazyload" src="<?php echo esc_url( $item['images']['thumbnail'] ); ?>" data-srcset="<?php echo esc_attr( implode( ', ', $srcset ) ); ?>" sizes="auto" alt="<?php echo esc_attr( $item['id'] ); ?>">
 								</a>
 							</li>
 						<?php endforeach; ?>
 					</ul>
 
 					<?php if ( ! empty( $button_text ) ) : ?>
-					<a href="<?php echo esc_url( 'https://www.instagram.com/' . $instance['username'] ); ?>" class="btn btn-accent tw-w-full tw-mt-6"><?php echo do_shortcode( $button_text ); ?></a>
+					<a href="<?php echo esc_url( 'https://www.instagram.com/' . $user['username'] ); ?>" class="btn btn-accent tw-w-full tw-mt-6"><?php echo do_shortcode( $button_text ); ?></a>
 					<?php endif; ?>
 				<?php
 			} else {
