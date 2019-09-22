@@ -3,7 +3,7 @@
  * Plugin Name: Stein Kit
  * Plugin URI:
  * Description: The essential plugin for Stein theme.
- * Version: 1.0
+ * Version: 1.1
  * Author: Rifki
  *
  * @package Stein Kit
