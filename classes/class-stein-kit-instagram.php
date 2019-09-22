@@ -385,7 +385,7 @@ if ( ! class_exists( 'Stein_Kit_Instagram' ) ) {
 				return $this->get_media_from_api();
 			}
 
-			return $this->get_media_from_scrapper();
+			return $this->get_media_from_scrapper( $username );
 		}
 
 		/**
