@@ -13,16 +13,56 @@ msgstr ""
 "X-Poedit-SourceCharset: UTF-8\n"
 "Plural-Forms: nplurals=2; plural=(n != 1);\n"
 
+#: ../classes/class-stein-kit-instagram.php:79, ../classes/class-stein-kit-mailchimp.php:103
+msgid "API Settings"
+msgstr ""
+
+#: ../classes/class-stein-kit-instagram.php:86
+msgid "Access Token"
+msgstr ""
+
+#: ../classes/class-stein-kit-instagram.php:105
+msgid "Cache cleared."
+msgstr ""
+
+#: ../classes/class-stein-kit-instagram.php:130, ../classes/class-stein-kit-instagram.php:148
+msgid "Instagram Settings"
+msgstr ""
+
+#: ../classes/class-stein-kit-instagram.php:131, ../widgets/class-stein-kit-instagram-widget.php:29
+msgid "Instagram"
+msgstr ""
+
+#: ../classes/class-stein-kit-instagram.php:158, ../classes/class-stein-kit-mailchimp.php:159
+msgid "Save Changes"
+msgstr ""
+
+#: ../classes/class-stein-kit-instagram.php:160, ../classes/class-stein-kit-mailchimp.php:161
+msgid "Clear Cache"
+msgstr ""
+
+#: ../classes/class-stein-kit-instagram.php:194
+msgid "The access token for connecting with your Instagram account."
+msgstr ""
+
+#: ../classes/class-stein-kit-instagram.php:195
+msgid "Generate your access token here."
+msgstr ""
+
+#: ../classes/class-stein-kit-instagram.php:201
+msgid "Please note"
+msgstr ""
+
+#: ../classes/class-stein-kit-instagram.php:202
+msgid "If you are using access token, you may only display the Instagram feed of your own Instagram profile."
+msgstr ""
+
 #: ../classes/class-stein-kit-mailchimp.php:79, ../classes/class-stein-kit-mailchimp.php:149
 msgid "MailChimp Settings"
 msgstr ""
 
 #: ../classes/class-stein-kit-mailchimp.php:80
 msgid "MailChimp"
-msgstr ""
-
-#: ../classes/class-stein-kit-mailchimp.php:103
-msgid "API Settings"
 msgstr ""
 
 #: ../classes/class-stein-kit-mailchimp.php:110
@@ -73,16 +113,12 @@ msgstr ""
 msgid "Show social links?"
 msgstr ""
 
-#: ../widgets/class-stein-kit-about-widget.php:139, ../widgets/class-stein-kit-instagram-widget.php:116, ../widgets/class-stein-kit-mailchimp-form-widget.php:93, ../widgets/class-stein-kit-posts-widget.php:110, ../widgets/class-stein-kit-social-widget.php:103
+#: ../widgets/class-stein-kit-about-widget.php:139, ../widgets/class-stein-kit-instagram-widget.php:116, ../widgets/class-stein-kit-mailchimp-form-widget.php:93, ../widgets/class-stein-kit-posts-widget.php:110, ../widgets/class-stein-kit-social-widget.php:103, ../widgets/class-stein-kit-tweets-widget.php:89
 msgid "Title:"
 msgstr ""
 
 #: ../widgets/class-stein-kit-about-widget.php:149
 msgid "Please install Advanced Custom Fields plugin to use this widget."
-msgstr ""
-
-#: ../widgets/class-stein-kit-instagram-widget.php:29
-msgid "Instagram"
 msgstr ""
 
 #: ../widgets/class-stein-kit-instagram-widget.php:32
@@ -97,27 +133,27 @@ msgid_plural "%s columns"
 msgstr[0] ""
 msgstr[1] ""
 
-#: ../widgets/class-stein-kit-instagram-widget.php:124
+#: ../widgets/class-stein-kit-instagram-widget.php:125, ../widgets/class-stein-kit-tweets-widget.php:97
 msgid "Username:"
 msgstr ""
 
-#: ../widgets/class-stein-kit-instagram-widget.php:132, ../widgets/class-stein-kit-posts-widget.php:146, ../widgets/class-stein-kit-social-widget.php:125
+#: ../widgets/class-stein-kit-instagram-widget.php:134, ../widgets/class-stein-kit-posts-widget.php:146, ../widgets/class-stein-kit-social-widget.php:125
 msgid "Limit:"
 msgstr ""
 
-#: ../widgets/class-stein-kit-instagram-widget.php:140
+#: ../widgets/class-stein-kit-instagram-widget.php:142
 msgid "Columns:"
 msgstr ""
 
-#: ../widgets/class-stein-kit-instagram-widget.php:154
+#: ../widgets/class-stein-kit-instagram-widget.php:156
 msgid "Button text:"
 msgstr ""
 
-#: ../widgets/class-stein-kit-instagram-widget.php:162
+#: ../widgets/class-stein-kit-instagram-widget.php:164
 msgid "Enable button icon?"
 msgstr ""
 
-#: ../widgets/class-stein-kit-instagram-widget.php:223
+#: ../widgets/class-stein-kit-instagram-widget.php:226
 msgid "No data available."
 msgstr ""
 
@@ -151,6 +187,14 @@ msgstr ""
 
 #: ../widgets/class-stein-kit-mailchimp-form-widget.php:131
 msgid "Terms Label:"
+msgstr ""
+
+#: ../widgets/class-stein-kit-posts-widget.php:29
+msgid "Posts"
+msgstr ""
+
+#: ../widgets/class-stein-kit-posts-widget.php:32
+msgid "Displays your site's posts."
 msgstr ""
 
 #: ../widgets/class-stein-kit-posts-widget.php:103
@@ -211,4 +255,22 @@ msgstr ""
 
 #: ../widgets/class-stein-kit-social-widget.php:200
 msgid "No social links available."
+msgstr ""
+
+#: ../widgets/class-stein-kit-tweets-widget.php:29
+msgid "Tweets"
+msgstr ""
+
+#: ../widgets/class-stein-kit-tweets-widget.php:32
+msgid "Displays tweets."
+msgstr ""
+
+#: ../widgets/class-stein-kit-tweets-widget.php:105
+msgid "Count:"
+msgstr ""
+
+#. translators: %s: Human time diff
+#: ../widgets/class-stein-kit-tweets-widget.php:162
+msgctxt "%s: Human time diff"
+msgid "%s ago"
 msgstr ""
