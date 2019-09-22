@@ -50,7 +50,7 @@ if ( ! class_exists( 'Stein_Kit_Instagram' ) ) {
 		 * @return void
 		 */
 		public function __construct() {
-			$this->options = get_option( $this->id );
+			$this->options = (array) get_option( $this->id );
 
 			add_action( 'admin_init', array( $this, 'register_setting' ) );
 			add_action( 'admin_menu', array( $this, 'add_options_page' ) );
@@ -150,12 +150,14 @@ if ( ! class_exists( 'Stein_Kit_Instagram' ) ) {
 				<form method="post" action="options.php">
 					<?php
 					settings_fields( $this->id );
+
 					do_settings_sections( $this->id );
 					?>
 
 					<p class="submit">
 						<?php
 						submit_button( esc_html__( 'Save Changes', 'stein-kit' ), 'primary', 'submit', false );
+
 						submit_button(
 							esc_html__( 'Clear Cache', 'stein-kit' ),
 							'delete',
@@ -464,7 +466,7 @@ if ( ! class_exists( 'Stein_Kit_Instagram' ) ) {
 									);
 
 									foreach ( $image_set as $key => $value ) {
-										if ( isset( $image['config_width'] ) && ( $value === absint( $image['config_width'] ) ) ) {
+										if ( isset( $image['config_width'] ) && ( absint( $image['config_width'] ) === $value ) ) {
 											$item['images'][ $key ] = array(
 												'width'  => absint( $image['config_width'] ),
 												'height' => absint( $image['config_height'] ),
@@ -498,15 +500,10 @@ if ( ! class_exists( 'Stein_Kit_Instagram' ) ) {
 		public function cleanup() {
 			global $wpdb;
 
-			$transients = $wpdb->get_results( 'SELECT * FROM ' . $wpdb->options . ' WHERE option_name = "_transient_' . $this->id . '" OR option_name LIKE "_transient_' . $this->id . '_%"' );
+			$transients = $wpdb->get_results( $wpdb->prepare( 'SELECT * FROM ' . $wpdb->options . ' WHERE `option_name` = %s OR `option_name` LIKE %s', '_transient_' . $this->id, '_transient_' . $this->id . '_%' ) );
 
-			if ( ! empty( $transients ) ) {
-				foreach ( $transients as $transient ) {
-					$prefix    = '_transient_';
-					$transient = substr( $transient->option_name, strlen( $prefix ) );
-
-					delete_transient( $transient );
-				}
+			foreach ( (array) $transients as $transient ) {
+				delete_transient( substr( $transient->option_name, strlen( '_transient_' ) ) );
 			}
 		}
 	}
