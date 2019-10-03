@@ -210,7 +210,7 @@ if ( ! class_exists( 'Stein_Kit_Instagram_Widget' ) && class_exists( 'WP_Widget'
 										$srcset[] = $thumbnail['url'] . ' ' . $thumbnail['width'] . 'w';
 									}
 									?>
-									<img class="tw-object-cover tw-absolute tw-left-0 tw-top-0 tw-w-full tw-h-full lazyload" src="<?php echo esc_url( $item['images']['thumbnail'] ); ?>" data-srcset="<?php echo esc_attr( implode( ', ', $srcset ) ); ?>" sizes="auto" alt="<?php echo esc_attr( $item['id'] ); ?>">
+									<img class="tw-object-cover tw-absolute tw-left-0 tw-top-0 tw-w-full tw-h-full lazyload" src="<?php echo esc_url( $item['images']['thumbnail']['url'] ); ?>" data-srcset="<?php echo esc_attr( implode( ', ', $srcset ) ); ?>" sizes="auto" alt="<?php echo esc_attr( $item['id'] ); ?>">
 								</a>
 							</li>
 						<?php endforeach; ?>
