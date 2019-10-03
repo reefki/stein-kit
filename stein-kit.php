@@ -1,13 +1,14 @@
 <?php
 /**
  * Plugin Name: Stein Kit
- * Plugin URI:
+ * Plugin URI: https://github.com/reefki/stein-kit
  * Description: The essential plugin for Stein theme.
- * Version: 1.1
+ * Version: 1.1.1
  * Author: Rifki
+ * Author URI: https://rifki.net
+ * Text Domain: stein-kit
  *
  * @package Stein Kit
- * @since   1.0
  */
 
 if ( ! defined( 'ABSPATH' ) ) {
