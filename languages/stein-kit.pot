@@ -33,27 +33,27 @@ msgstr ""
 msgid "Instagram"
 msgstr ""
 
-#: ../classes/class-stein-kit-instagram.php:158, ../classes/class-stein-kit-mailchimp.php:159
+#: ../classes/class-stein-kit-instagram.php:159, ../classes/class-stein-kit-mailchimp.php:159
 msgid "Save Changes"
 msgstr ""
 
-#: ../classes/class-stein-kit-instagram.php:160, ../classes/class-stein-kit-mailchimp.php:161
+#: ../classes/class-stein-kit-instagram.php:162, ../classes/class-stein-kit-mailchimp.php:161
 msgid "Clear Cache"
 msgstr ""
 
-#: ../classes/class-stein-kit-instagram.php:194
+#: ../classes/class-stein-kit-instagram.php:196
 msgid "The access token for connecting with your Instagram account."
 msgstr ""
 
-#: ../classes/class-stein-kit-instagram.php:195
+#: ../classes/class-stein-kit-instagram.php:197
 msgid "Generate your access token here."
 msgstr ""
 
-#: ../classes/class-stein-kit-instagram.php:201
+#: ../classes/class-stein-kit-instagram.php:203
 msgid "Please note"
 msgstr ""
 
-#: ../classes/class-stein-kit-instagram.php:202
+#: ../classes/class-stein-kit-instagram.php:204
 msgid "If you are using access token, you may only display the Instagram feed of your own Instagram profile."
 msgstr ""
 
@@ -77,7 +77,7 @@ msgstr ""
 msgid "Get your API key here."
 msgstr ""
 
-#: ../stein-kit.php:204
+#: ../stein-kit.php:205
 msgid "Check out this article"
 msgstr ""
 
@@ -113,7 +113,7 @@ msgstr ""
 msgid "Show social links?"
 msgstr ""
 
-#: ../widgets/class-stein-kit-about-widget.php:139, ../widgets/class-stein-kit-instagram-widget.php:116, ../widgets/class-stein-kit-mailchimp-form-widget.php:93, ../widgets/class-stein-kit-posts-widget.php:110, ../widgets/class-stein-kit-social-widget.php:103, ../widgets/class-stein-kit-tweets-widget.php:89
+#: ../widgets/class-stein-kit-about-widget.php:139, ../widgets/class-stein-kit-instagram-widget.php:116, ../widgets/class-stein-kit-mailchimp-form-widget.php:93, ../widgets/class-stein-kit-posts-widget.php:110, ../widgets/class-stein-kit-social-widget.php:103
 msgid "Title:"
 msgstr ""
 
@@ -133,7 +133,7 @@ msgid_plural "%s columns"
 msgstr[0] ""
 msgstr[1] ""
 
-#: ../widgets/class-stein-kit-instagram-widget.php:125, ../widgets/class-stein-kit-tweets-widget.php:97
+#: ../widgets/class-stein-kit-instagram-widget.php:125
 msgid "Username:"
 msgstr ""
 
@@ -255,22 +255,4 @@ msgstr ""
 
 #: ../widgets/class-stein-kit-social-widget.php:200
 msgid "No social links available."
-msgstr ""
-
-#: ../widgets/class-stein-kit-tweets-widget.php:29
-msgid "Tweets"
-msgstr ""
-
-#: ../widgets/class-stein-kit-tweets-widget.php:32
-msgid "Displays tweets."
-msgstr ""
-
-#: ../widgets/class-stein-kit-tweets-widget.php:105
-msgid "Count:"
-msgstr ""
-
-#. translators: %s: Human time diff
-#: ../widgets/class-stein-kit-tweets-widget.php:162
-msgctxt "%s: Human time diff"
-msgid "%s ago"
 msgstr ""
