@@ -9,6 +9,7 @@
  * Text Domain: stein-kit
  *
  * @package Stein Kit
+ * @since   1.0
  */
 
 if ( ! defined( 'ABSPATH' ) ) {
