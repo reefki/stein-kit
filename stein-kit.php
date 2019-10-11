@@ -4,7 +4,7 @@
  * Plugin URI: https://github.com/reefki/stein-kit
  * Description: The essential plugin for Stein theme.
  * Version: 1.1.2
- * Author: Rifki
+ * Author: Rifki Aria Gumelar
  * Author URI: https://rifki.net
  * Text Domain: stein-kit
  *
