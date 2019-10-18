@@ -1,26 +1,65 @@
 <?xml version="1.0"?>
-<ruleset name="WordPress Coding Standards for Stein Kit plugin">
-    <description>Sniffs for WordPress plugins, with minor modifications for Stein Kit</description>
+<ruleset name="WordPress Plugin Coding Standards">
+    <!-- Description for this ruleset. -->
+    <description>A custom set of code standard rules to check for WordPress plugins.</description>
 
-    <rule ref="WordPress"/>
+    <!-- Pass some flags to PHPCS:
+         p flag: Show progress of the run.
+         s flag: Show sniff codes in all reports.
+         v flag: Print verbose output.
+         n flag: Do not print warnings.
+    -->
+    <arg value="psv"/>
 
-    <rule ref="WordPress.Files.FileName">
-        <properties>
-            <property name="is_theme" value="false"/>
-        </properties>
+    <!-- Strip the filepaths down to the relevant bit. -->
+    <arg name="basepath" value="./"/>
+
+    <!-- Check up to 8 files simultanously. -->
+    <!-- <arg name="parallel" value="8"/> -->
+
+    <!-- Only check the PHP files. JS files are checked separately with JSCS and JSHint. -->
+    <arg name="extensions" value="php"/>
+
+    <!-- Check all files in this directory and the directories below it. -->
+    <file>.</file>
+
+    <!-- Ignore these directories -->
+    <exclude-pattern>./node_modules</exclude-pattern>
+    <exclude-pattern>./languages</exclude-pattern>
+
+    <!-- Ignore these files -->
+    <exclude-pattern>./Envoy.blade.php</exclude-pattern>
+
+    <!-- Include the WordPress ruleset, with exclusions. -->
+    <rule ref="WordPress">
+        <!-- Getting error on placeholder files, index.php -->
+        <exclude name="Squiz.Commenting.FileComment.SpacingAfterComment" />
+        <!-- Getting error on Detected usage of tax_query. -->
+        <exclude name="WordPress.DB.SlowDBQuery.slow_db_query_tax_query" />
     </rule>
 
-    <rule ref="WordPress.WP.I18n">
-        <properties>
-            <property name="text_domain" type="array">
-                <element value="stein-kit"/>
-            </property>
-        </properties>
-    </rule>
-
+    <!-- Verify that no WP functions are used which are deprecated or have been removed.
+         The minimum version set here should be in line with the minimum WP version
+         as set in the "Requires at least" tag in the readme.txt file. -->
     <rule ref="WordPress.WP.DeprecatedFunctions">
         <properties>
-            <property name="minimum_supported_version" value="4.0"/>
+            <property name="minimum_supported_version" value="4.5" />
         </properties>
     </rule>
+
+    <!-- Verify that the text_domain is set to the desired text-domain.
+         Multiple valid text domains can be provided as a comma-delimited list. -->
+    <rule ref="WordPress.WP.I18n">
+        <properties>
+            <property name="text_domain" type="array" value="stein-kit"/>
+        </properties>
+    </rule>
+
+    <!-- Verify that everything in the global namespace is prefixed with a theme specific prefix.
+         Multiple valid prefixes can be provided as a comma-delimited list. -->
+    <!-- <rule ref="WordPress.NamingConventions.PrefixAllGlobals">
+        <properties>
+            <property name="prefixes" type="array" value="stein" />
+        </properties>
+    </rule> -->
 </ruleset>
