@@ -110,7 +110,7 @@ if ( ! class_exists( 'Stein_Kit_Instagram' ) ) {
 			if ( isset( $input['access_token'] ) ) {
 				$values['access_token'] = sanitize_text_field( $input['access_token'] );
 
-				if ( $values['access_token'] !== $this->options['access_token'] ) {
+				if ( isset ( $this->options['access_token'] ) && ( $values['access_token'] !== $this->options['access_token'] ) ) {
 					$this->cleanup();
 				}
 			}
