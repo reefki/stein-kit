@@ -3,7 +3,7 @@
  * Plugin Name: Stein Kit
  * Plugin URI: https://github.com/reefki/stein-kit
  * Description: The essential plugin for Stein theme.
- * Version: 1.1.2
+ * Version: 1.2.0
  * Author: Rifki Aria Gumelar
  * Author URI: https://rifki.net
  * Text Domain: stein-kit
