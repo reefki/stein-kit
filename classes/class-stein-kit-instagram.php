@@ -195,14 +195,14 @@ if ( ! class_exists( 'Stein_Kit_Instagram' ) ) {
 				'<p class="help">%1$s <a href="%3$s" target="_blank">%2$s</a></p>',
 				esc_html__( 'The access token for connecting with your Instagram account.', 'stein-kit' ),
 				esc_html__( 'Generate your access token here.', 'stein-kit' ),
-				esc_url( 'https://instagram.pixelunion.net' )
+				esc_url( 'https://instagram.flairthemes.com' )
 			);
 
 			printf(
 				'<p class="help"><strong>%1$s:</strong> %2$s</p>',
 				esc_html__( 'Please note', 'stein-kit' ),
 				esc_html__( 'If you are using access token, you may only display the Instagram feed of your own Instagram profile.', 'stein-kit' ),
-				esc_url( 'https://instagram.pixelunion.net' )
+				esc_url( 'https://instagram.flairthemes.com' )
 			);
 		}
 
