@@ -1,4 +1,4 @@
-# Copyright (C) 2019 Stein Kit
+# Copyright (C) 2020 Stein Kit
 # This file is distributed under the same license as the Stein Kit package.
 msgid ""
 msgstr ""
@@ -13,48 +13,60 @@ msgstr ""
 "X-Poedit-SourceCharset: UTF-8\n"
 "Plural-Forms: nplurals=2; plural=(n != 1);\n"
 
-#: ../classes/class-stein-kit-instagram.php:79, ../classes/class-stein-kit-mailchimp.php:103
-msgid "API Settings"
+#: ../classes/class-stein-kit-instagram.php:84
+msgid "Settings"
 msgstr ""
 
-#: ../classes/class-stein-kit-instagram.php:86
-msgid "Access Token"
+#: ../classes/class-stein-kit-instagram.php:91
+msgid "Cache "
 msgstr ""
 
-#: ../classes/class-stein-kit-instagram.php:105
+#: ../classes/class-stein-kit-instagram.php:110
 msgid "Cache cleared."
 msgstr ""
 
-#: ../classes/class-stein-kit-instagram.php:130, ../classes/class-stein-kit-instagram.php:148
+#: ../classes/class-stein-kit-instagram.php:118
+msgid "Instagram account successfully disconnected."
+msgstr ""
+
+#: ../classes/class-stein-kit-instagram.php:166, ../classes/class-stein-kit-instagram.php:211
 msgid "Instagram Settings"
 msgstr ""
 
-#: ../classes/class-stein-kit-instagram.php:131, ../widgets/class-stein-kit-instagram-widget.php:29
+#: ../classes/class-stein-kit-instagram.php:167, ../widgets/class-stein-kit-instagram-widget.php:29
 msgid "Instagram"
 msgstr ""
 
-#: ../classes/class-stein-kit-instagram.php:159, ../classes/class-stein-kit-mailchimp.php:159
+#: ../classes/class-stein-kit-instagram.php:207
+msgid "Instagram account successfully connected."
+msgstr ""
+
+#: ../classes/class-stein-kit-instagram.php:213
+msgid "Connection"
+msgstr ""
+
+#: ../classes/class-stein-kit-instagram.php:221
+msgid "Connected account ID:"
+msgstr ""
+
+#: ../classes/class-stein-kit-instagram.php:225
+msgid "Disconnect"
+msgstr ""
+
+#: ../classes/class-stein-kit-instagram.php:243
+msgid "Connect"
+msgstr ""
+
+#: ../classes/class-stein-kit-instagram.php:265, ../classes/class-stein-kit-mailchimp.php:159
 msgid "Save Changes"
 msgstr ""
 
-#: ../classes/class-stein-kit-instagram.php:162, ../classes/class-stein-kit-mailchimp.php:161
+#: ../classes/class-stein-kit-instagram.php:266, ../classes/class-stein-kit-mailchimp.php:161
 msgid "Clear Cache"
 msgstr ""
 
-#: ../classes/class-stein-kit-instagram.php:196
-msgid "The access token for connecting with your Instagram account."
-msgstr ""
-
-#: ../classes/class-stein-kit-instagram.php:197
-msgid "Generate your access token here."
-msgstr ""
-
-#: ../classes/class-stein-kit-instagram.php:203
-msgid "Please note"
-msgstr ""
-
-#: ../classes/class-stein-kit-instagram.php:204
-msgid "If you are using access token, you may only display the Instagram feed of your own Instagram profile."
+#: ../classes/class-stein-kit-instagram.php:285
+msgid "The cache expiry time in minutes. Default is 1440, equivalent to 24 hours."
 msgstr ""
 
 #: ../classes/class-stein-kit-mailchimp.php:79, ../classes/class-stein-kit-mailchimp.php:149
@@ -63,6 +75,10 @@ msgstr ""
 
 #: ../classes/class-stein-kit-mailchimp.php:80
 msgid "MailChimp"
+msgstr ""
+
+#: ../classes/class-stein-kit-mailchimp.php:103
+msgid "API Settings"
 msgstr ""
 
 #: ../classes/class-stein-kit-mailchimp.php:110
@@ -77,7 +93,7 @@ msgstr ""
 msgid "Get your API key here."
 msgstr ""
 
-#: ../stein-kit.php:205
+#: ../includes/helpers.php:90
 msgid "Check out this article"
 msgstr ""
 
@@ -113,7 +129,7 @@ msgstr ""
 msgid "Show social links?"
 msgstr ""
 
-#: ../widgets/class-stein-kit-about-widget.php:139, ../widgets/class-stein-kit-instagram-widget.php:116, ../widgets/class-stein-kit-mailchimp-form-widget.php:93, ../widgets/class-stein-kit-posts-widget.php:110, ../widgets/class-stein-kit-social-widget.php:103
+#: ../widgets/class-stein-kit-about-widget.php:139, ../widgets/class-stein-kit-instagram-widget.php:114, ../widgets/class-stein-kit-mailchimp-form-widget.php:93, ../widgets/class-stein-kit-posts-widget.php:110, ../widgets/class-stein-kit-social-widget.php:103
 msgid "Title:"
 msgstr ""
 
@@ -127,33 +143,29 @@ msgstr ""
 
 #. translators: %s: column
 #. translators: %s: column
-#: ../widgets/class-stein-kit-instagram-widget.php:111, ../widgets/class-stein-kit-social-widget.php:98
+#: ../widgets/class-stein-kit-instagram-widget.php:109, ../widgets/class-stein-kit-social-widget.php:98
 msgid "%s column"
 msgid_plural "%s columns"
 msgstr[0] ""
 msgstr[1] ""
 
-#: ../widgets/class-stein-kit-instagram-widget.php:125
-msgid "Username:"
-msgstr ""
-
-#: ../widgets/class-stein-kit-instagram-widget.php:134, ../widgets/class-stein-kit-posts-widget.php:146, ../widgets/class-stein-kit-social-widget.php:125
+#: ../widgets/class-stein-kit-instagram-widget.php:122, ../widgets/class-stein-kit-posts-widget.php:146, ../widgets/class-stein-kit-social-widget.php:125
 msgid "Limit:"
 msgstr ""
 
-#: ../widgets/class-stein-kit-instagram-widget.php:142
+#: ../widgets/class-stein-kit-instagram-widget.php:130
 msgid "Columns:"
 msgstr ""
 
-#: ../widgets/class-stein-kit-instagram-widget.php:156
+#: ../widgets/class-stein-kit-instagram-widget.php:144
 msgid "Button text:"
 msgstr ""
 
-#: ../widgets/class-stein-kit-instagram-widget.php:164
+#: ../widgets/class-stein-kit-instagram-widget.php:152
 msgid "Enable button icon?"
 msgstr ""
 
-#: ../widgets/class-stein-kit-instagram-widget.php:226
+#: ../widgets/class-stein-kit-instagram-widget.php:209
 msgid "No data available."
 msgstr ""
 
