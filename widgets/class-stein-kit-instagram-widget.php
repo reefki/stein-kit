@@ -46,7 +46,6 @@ if ( ! class_exists( 'Stein_Kit_Instagram_Widget' ) && class_exists( 'WP_Widget'
 				'stein_kit_instagram_widget_defaults',
 				array(
 					'title'       => null,
-					'username'    => null,
 					'columns'     => 3,
 					'limit'       => 9,
 					'button_text' => null,
@@ -69,7 +68,6 @@ if ( ! class_exists( 'Stein_Kit_Instagram_Widget' ) && class_exists( 'WP_Widget'
 			$new      = wp_parse_args( (array) $new, $this->defaults() );
 
 			$instance['title']       = sanitize_text_field( $new['title'] );
-			$instance['username']    = sanitize_text_field( $new['username'] );
 			$instance['limit']       = absint( $new['limit'] );
 			$instance['columns']     = absint( $new['columns'] );
 			$instance['button_text'] = sanitize_text_field( $new['button_text'] );
@@ -119,22 +117,12 @@ if ( ! class_exists( 'Stein_Kit_Instagram_Widget' ) && class_exists( 'WP_Widget'
 					<input id="<?php echo esc_attr( $this->get_field_id( 'title' ) ); ?>" class="widefat" name="<?php echo esc_attr( $this->get_field_name( 'title' ) ); ?>" type="text" value="<?php echo esc_attr( $instance['title'] ); ?>">
 				</p>
 
-				<?php if ( ! stein_kit_instagram_get_option( 'access_token' ) ) : ?>
-					<p>
-						<label for="<?php echo esc_attr( $this->get_field_id( 'username' ) ); ?>">
-							<?php esc_html_e( 'Username:', 'stein-kit' ); ?>
-						</label>
-
-						<input id="<?php echo esc_attr( $this->get_field_id( 'username' ) ); ?>" class="widefat" name="<?php echo esc_attr( $this->get_field_name( 'username' ) ); ?>" type="text" value="<?php echo esc_attr( $instance['username'] ); ?>">
-					</p>
-				<?php endif; ?>
-
 				<p>
 					<label for="<?php echo esc_attr( $this->get_field_id( 'limit' ) ); ?>">
 						<?php esc_html_e( 'Limit:', 'stein-kit' ); ?>
 					</label>
 
-					<input id="<?php echo esc_attr( $this->get_field_id( 'limit' ) ); ?>" class="tiny-text" name="<?php echo esc_attr( $this->get_field_name( 'limit' ) ); ?>" type="number" min="1" max="12" value="<?php echo esc_attr( $instance['limit'] ); ?>">
+					<input id="<?php echo esc_attr( $this->get_field_id( 'limit' ) ); ?>" class="tiny-text" name="<?php echo esc_attr( $this->get_field_name( 'limit' ) ); ?>" type="number" min="1" max="16" value="<?php echo esc_attr( $instance['limit'] ); ?>">
 				</p>
 
 				<p>
@@ -188,36 +176,31 @@ if ( ! class_exists( 'Stein_Kit_Instagram_Widget' ) && class_exists( 'WP_Widget'
 				echo apply_filters( 'after_title', $args['after_title'], $instance, $this->id_base ); // phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped
 			}
 
-			$media       = stein_kit_instagram_get_media( $instance['username'] );
-			$user        = stein_kit_instagram_get_profile( $instance['username'] );
 			$button_text = $instance['button_text'];
+			$media = stein_kit_instagram_get_media();
+			$profile = stein_kit_instagram_get_profile();
 
 			if ( $button_text && ! empty( $instance['button_icon'] ) ) {
 				$button_text = "<i class=\"si si-instagram tw-mr-2\"></i>{$button_text}";
 			}
 
 			if ( ! empty( $media ) ) {
-				$media = array_slice( $media, 0, $instance['limit'] );
+				$media = array_slice( $media['data'], 0, $instance['limit'] );
 				?>
 					<ul class="instagram-items tw-list-reset tw-flex tw-flex-wrap tw-grid tw-grid-columns-<?php echo esc_attr( $instance['columns'] ); ?>" style="grid-gap: 8px;">
 						<?php foreach ( $media as $item ) : ?>
 							<li class="instagram-item tw-flex-auto">
-								<a href="<?php echo esc_url( $item['link'] ); ?>" class="instagram-image tw-block tw-bg-alt tw-relative tw-aspect-ratio-1/1 hover_tw-opacity-85 tw-transition-opacity tw-transition-duration-200">
-									<?php
-									$srcset = array();
-
-									foreach ( $item['images'] as $thumbnail ) {
-										$srcset[] = $thumbnail['url'] . ' ' . $thumbnail['width'] . 'w';
-									}
-									?>
-									<img class="tw-object-cover tw-absolute tw-left-0 tw-top-0 tw-w-full tw-h-full lazyload" src="<?php echo esc_url( $item['images']['thumbnail']['url'] ); ?>" data-srcset="<?php echo esc_attr( implode( ', ', $srcset ) ); ?>" sizes="auto" alt="<?php echo esc_attr( $item['id'] ); ?>">
+								<a href="<?php echo esc_url( $item['permalink'] ); ?>" class="instagram-image tw-block tw-bg-alt tw-relative tw-aspect-ratio-1/1 hover_tw-opacity-85 tw-transition-opacity tw-transition-duration-200">
+									<img class="tw-object-cover tw-absolute tw-left-0 tw-top-0 tw-w-full tw-h-full lazyload" src="<?php echo esc_url( $item['media_url'] ); ?>" alt="<?php echo esc_attr( $item['id'] ); ?>">
 								</a>
 							</li>
 						<?php endforeach; ?>
 					</ul>
 
-					<?php if ( ! empty( $button_text ) ) : ?>
-					<a href="<?php echo esc_url( 'https://www.instagram.com/' . $user['username'] ); ?>" class="btn btn-accent tw-w-full tw-mt-6"><?php echo do_shortcode( $button_text ); ?></a>
+					<?php if ( ! empty( $profile ) && ! empty( $button_text ) ) : ?>
+						<a href="<?php echo esc_url( 'https://www.instagram.com/' . $profile['username'] ); ?>" class="btn btn-accent tw-w-full tw-mt-6">
+							<?php echo do_shortcode( $button_text ); ?>
+						</a>
 					<?php endif; ?>
 				<?php
 			} else {

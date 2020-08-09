@@ -32,7 +32,7 @@ if ( ! class_exists( 'Stein_Kit_Instagram' ) ) {
 		 * @access protected
 		 * @var    string
 		 */
-		protected $api_url = 'https://api.instagram.com/v1/';
+		protected $api_url = 'https://graph.instagram.com/';
 
 		/**
 		 * Options
@@ -52,8 +52,13 @@ if ( ! class_exists( 'Stein_Kit_Instagram' ) ) {
 		public function __construct() {
 			$this->options = (array) get_option( $this->id );
 
+			add_action( 'stein_kit_activated', array( $this, 'activation' ) );
+			add_action( 'stein_kit_deactivated', array( $this, 'deactivation' ) );
+
 			add_action( 'admin_init', array( $this, 'register_setting' ) );
+			add_action( 'admin_init', array( $this, 'handle_oauth_response' ) );
 			add_action( 'admin_menu', array( $this, 'add_options_page' ) );
+			add_action( $this->id . '_refresh_access_token', array( $this, 'refresh_access_token' ) );
 
 			add_filter( $this->id . '_get_option', array( $this, 'get_option' ), 10, 2 );
 			add_filter( $this->id . '_get_profile', array( $this, 'get_profile' ), 10, 2 );
@@ -75,18 +80,18 @@ if ( ! class_exists( 'Stein_Kit_Instagram' ) ) {
 			);
 
 			add_settings_section(
-				"{$this->id}_api_settings",
-				esc_html__( 'API Settings', 'stein-kit' ),
+				"{$this->id}_settings",
+				esc_html__( 'Settings', 'stein-kit' ),
 				false,
 				$this->id
 			);
 
 			add_settings_field(
-				"{$this->id}_access_token",
-				esc_html__( 'Access Token', 'stein-kit' ),
-				array( $this, 'field_access_token_template' ),
+				"{$this->id}_cache_expiry_time",
+				esc_html__( 'Cache ', 'stein-kit' ),
+				array( $this, 'field_cache_expiry_time_template' ),
 				$this->id,
-				"{$this->id}_api_settings"
+				"{$this->id}_settings"
 			);
 		}
 
@@ -95,24 +100,53 @@ if ( ! class_exists( 'Stein_Kit_Instagram' ) ) {
 		 *
 		 * @since  1.0
 		 * @access public
-		 * @param  array $input Imput data to sanitize.
+		 * @param  array $input Input data to sanitize.
 		 * @return array
 		 */
 		public function sanitize( $input ) {
-			if ( isset( $_POST['clear'] ) ) {
+			if ( isset( $_POST['clear_cache'] ) ) {
 				$this->cleanup();
 
 				add_settings_error( $this->id, $this->id, esc_html__( 'Cache cleared.', 'stein-kit' ), 'updated' );
+
+				return $this->options;
+			}
+
+			if ( isset( $_POST['disconnect'] ) ) {
+				$this->cleanup();
+
+				add_settings_error( $this->id, $this->id, esc_html__( 'Instagram account successfully disconnected.', 'stein-kit' ), 'updated' );
+
+				$this->options['user_id'] = $this->options['access_token'] = $this->options['expires_in'] = '';
+
+				return $this->options;
 			}
 
 			$values = array();
 
-			if ( isset( $input['access_token'] ) ) {
-				$values['access_token'] = sanitize_text_field( $input['access_token'] );
+			$map = array(
+				'user_id' => 'integer',
+				'access_token' => 'string',
+				'expires_in' => 'integer',
+				'cache_expiry_time' => 'integer',
+			);
 
-				if ( isset ( $this->options['access_token'] ) && ( $values['access_token'] !== $this->options['access_token'] ) ) {
-					$this->cleanup();
+			foreach ($map as $key => $type) {
+				if ( ! isset( $input[$key] ) ) {
+					continue;
 				}
+
+				switch ($type) {
+					case 'integer':
+						$value = intval($input[$key]);
+						break;
+
+					default:
+						$value = sanitize_text_field($input[$key]);
+						break;
+				}
+
+				$values[$key] = $value;
 			}
 
 			return $values;
@@ -136,6 +170,26 @@ if ( ! class_exists( 'Stein_Kit_Instagram' ) ) {
 		}
 
 		/**
+		 * Sanitize form input.
+		 *
+		 * @since  1.0
+		 * @access public
+		 * @param  array $input Imput data to sanitize.
+		 * @return array
+		 */
+		public function handle_oauth_response() {
+			if ( isset( $_REQUEST['instagram_api_data'] ) ) { // Input var ok; sanitization ok.
+				$data = json_decode( base64_decode( $_REQUEST['instagram_api_data'] ), true );
+
+				update_option( $this->id, $data );
+
+				wp_redirect( admin_url( 'options-general.php?page=' . $this->id . '&connected=1' ) );
+
+				die();
+			}
+		}
+
+		/**
 		 * Options page template.
 		 *
 		 * @since  1.0
@@ -143,31 +197,72 @@ if ( ! class_exists( 'Stein_Kit_Instagram' ) ) {
 		 * @return void
 		 */
 		public function options_page_template() {
+			$connected 	  = isset( $_REQUEST['connected'] ) ? true : false;
+			$user_id      = $this->get_option( '', 'user_id' );
+			$access_token = $this->get_option( '', 'access_token' );
+			$expires_in   = $this->get_option( '', 'expires_in' );
+			
+			if ( $connected && $access_token ) {
+				printf( '<div class="notice notice-success is-dismissible"><p><strong>%s</strong></p></div>', esc_html__( 'Instagram account successfully connected.', 'stein-kit' ) );
+			}
 			?>
 			<div class="wrap">
 				<h1><?php esc_html_e( 'Instagram Settings', 'stein-kit' ); ?></h1>
 
+				<h2><?php esc_html_e('Connection'); ?></h2>
+
+				<table class="form-table" role="presentation">
+					<tbody>
+						<tr>
+							<th scope="row">Personal Account</th>
+							<td>
+								<?php if ( $user_id ) : ?>
+									<p><?php esc_html_e('Connected account ID:', 'stein-kit' ); ?> <strong><?php echo esc_html($user_id); ?></strong></p>
+
+									<form method="post" action="options.php">
+										<?php settings_fields( $this->id ); ?>
+										<p><?php submit_button( esc_html__( 'Disconnect', 'stein-kit' ), 'secondary', 'disconnect', false ); ?></p>
+									</form>
+								<?php else : ?>
+									<?php
+										$authorize_url = add_query_arg(
+											array(
+												'app_id'        => '2594225120812797',
+												'redirect_uri'  => rawurlencode( 'https://connect.rifki.net/instagram/auth' ),
+												'response_type' => 'code',
+												'scope'         => 'user_profile,user_media',
+												'state'         => base64_encode( admin_url() ),
+											),
+											'https://www.instagram.com/oauth/authorize'
+										);
+									?>
+
+									<p>
+										<a class="button button-secondary" href="<?php echo esc_url( $authorize_url ); ?>">
+											<?php esc_html_e( 'Connect', 'stein-kit' ); ?>
+										</a>
+									</p>
+								<?php endif; ?>
+							</td>
+						</tr>
+					</tbody>
+				</table>
+
 				<form method="post" action="options.php">
 					<?php
-					settings_fields( $this->id );
-
-					do_settings_sections( $this->id );
+						settings_fields( $this->id );
+						do_settings_sections( $this->id );
 					?>
 
-					<p class="submit">
-						<?php
-						submit_button( esc_html__( 'Save Changes', 'stein-kit' ), 'primary', 'submit', false );
+					<hr>
 
-						submit_button(
-							esc_html__( 'Clear Cache', 'stein-kit' ),
-							'delete',
-							'clear',
-							false,
-							array(
-								'style' => 'margin-left: 1rem;',
-							)
-						);
-						?>
+					<input type="hidden" name="<?php echo esc_attr($this->id . '[user_id]'); ?>" value="<?php echo esc_attr($user_id ); ?>">
+					<input type="hidden" name="<?php echo esc_attr($this->id . '[access_token]'); ?>" value="<?php echo esc_attr($access_token ); ?>">
+					<input type="hidden" name="<?php echo esc_attr($this->id . '[expires_in]'); ?>" value="<?php echo esc_attr($expires_in ); ?>">
+
+					<p class="submit">
+						<?php submit_button( esc_html__( 'Save Changes', 'stein-kit' ), 'primary', 'submit', false ); ?>
+						<?php submit_button( esc_html__( 'Clear Cache', 'stein-kit' ), 'delete', 'clear_cache', false, array( 'style' => 'margin-left: 0.5rem;' ) ); ?>
 					</p>
 				</form>
 			</div>
@@ -181,29 +276,13 @@ if ( ! class_exists( 'Stein_Kit_Instagram' ) ) {
 		 * @access public
 		 * @return void
 		 */
-		public function field_access_token_template() {
-			$value = isset( $this->options['access_token'] ) ? $this->options['access_token'] : null;
+		public function field_cache_expiry_time_template() {
+			$value = $this->get_option(DAY_IN_SECONDS/60, 'cache_expiry_time');
+			?>
+				<input type="text" id="<?php echo esc_attr( $this->id . '_cache_expiry_time' ); ?>" name="<?php echo esc_attr( $this->id . '[cache_expiry_time]' ); ?>" value="<?php echo esc_attr( $value ); ?>">
 
-			printf(
-				'<input type="text" id="%1$s" name="%2$s[%1$s]" value="%3$s">',
-				'access_token',
-				esc_attr( $this->id ),
-				esc_attr( $value )
-			);
-
-			printf(
-				'<p class="help">%1$s <a href="%3$s" target="_blank">%2$s</a></p>',
-				esc_html__( 'The access token for connecting with your Instagram account.', 'stein-kit' ),
-				esc_html__( 'Generate your access token here.', 'stein-kit' ),
-				esc_url( 'https://instagram.flairthemes.com' )
-			);
-
-			printf(
-				'<p class="help"><strong>%1$s:</strong> %2$s</p>',
-				esc_html__( 'Please note', 'stein-kit' ),
-				esc_html__( 'If you are using access token, you may only display the Instagram feed of your own Instagram profile.', 'stein-kit' ),
-				esc_url( 'https://instagram.flairthemes.com' )
-			);
+				<p class="help"><?php esc_html_e( 'The cache expiry time in minutes. Default is 1440, equivalent to 24 hours.', 'stein-kit' ); ?></p>
+			<?php
 		}
 
 		/**
@@ -216,8 +295,10 @@ if ( ! class_exists( 'Stein_Kit_Instagram' ) ) {
 		 * @return mixed
 		 */
 		public function get_option( $default, $key ) {
-			if ( array_key_exists( $key, $this->options ) ) {
-				return $this->options[ $key ];
+			$options = (array) get_option($this->id);
+
+			if ( array_key_exists( $key, $options ) ) {
+				return $options[ $key ];
 			}
 
 			return $default;
@@ -227,59 +308,24 @@ if ( ! class_exists( 'Stein_Kit_Instagram' ) ) {
 		 * Make an API request.
 		 *
 		 * @since  1.0
-		 * @access public
+		 * @access private
 		 * @param  string $endpoint The API endpoint.
 		 * @return array
 		 */
-		public function request( $endpoint ) {
+		private function request( $endpoint, $fields = null ) {
 			if ( ! empty( $this->options['access_token'] ) ) {
 				$response = wp_safe_remote_get(
 					add_query_arg(
 						array(
 							'access_token' => $this->options['access_token'],
+							'fields' => $fields
 						),
 						$this->api_url . $endpoint
 					)
 				);
 
 				if ( ! is_wp_error( $response ) && ( 200 === wp_remote_retrieve_response_code( $response ) ) ) {
-					$body = json_decode( wp_remote_retrieve_body( $response ), true );
-
-					return is_array( $body ) && ! empty( $body['data'] ) ? $body['data'] : array();
-				}
-			}
-
-			return array();
-		}
-
-		/**
-		 * Scrap account's profile page.
-		 *
-		 * @since  1.0
-		 * @access public
-		 * @param  string $username Instagram account username.
-		 * @return array
-		 */
-		public function scrap( $username ) {
-			if ( ! empty( $username ) ) {
-				$response = wp_safe_remote_get(
-					sprintf( 'https://www.instagram.com/%s', $username ),
-					array(
-						'httpversion' => '1.1',
-						'timeout'     => 120,
-					)
-				);
-
-				if ( is_array( $response ) && ! is_wp_error( $response ) ) {
-					$body = wp_remote_retrieve_body( $response );
-
-					if ( preg_match( '/window\._sharedData = (.*);<\/script>/', $body, $matches ) ) {
-						$json = json_decode( end( $matches ), true );
-
-						if ( $json && JSON_ERROR_NONE === json_last_error() ) {
-							return $json;
-						}
-					}
+					return json_decode( wp_remote_retrieve_body( $response ), true );
 				}
 			}
 
@@ -295,30 +341,15 @@ if ( ! class_exists( 'Stein_Kit_Instagram' ) ) {
 		 * @param  string $username Instagram account username.
 		 * @return array
 		 */
-		public function get_profile( $profile = array(), $username = null ) {
-			if ( ! empty( $this->options['access_token'] ) ) {
-				return $this->get_profile_from_api();
-			}
-
-			return $this->get_profile_from_scrapper();
-		}
-
-		/**
-		 * Get account's profile data from API request.
-		 *
-		 * @since  1.0
-		 * @access public
-		 * @return array
-		 */
-		public function get_profile_from_api() {
+		public function get_profile( $profile = array() ) {
 			$cache   = $this->id . '_profile';
 			$profile = get_transient( $cache );
 
 			if ( empty( $profile ) ) {
-				$profile = (array) $this->request( 'users/self' );
+				$profile = (array) $this->request( 'me', 'id,account_type,username,media_count' );
 
 				if ( ! empty( $profile ) ) {
-					set_transient( $cache, $profile, 1440 * 60 );
+					set_transient( $cache, $profile, intval($this->get_option( DAY_IN_SECONDS/60, 'cache_expiry_time' )) * 60 );
 				}
 			}
 
@@ -326,53 +357,7 @@ if ( ! class_exists( 'Stein_Kit_Instagram' ) ) {
 		}
 
 		/**
-		 * Get account's profile data by scrapping profile page.
-		 *
-		 * @since  1.0
-		 * @access public
-		 * @param  string $username Instagram account username.
-		 * @return array
-		 */
-		public function get_profile_from_scrapper( $username = null ) {
-			$profile = array();
-
-			if ( ! empty( $username ) ) {
-				$cache   = $this->id . '_profile_' . md5( $username );
-				$profile = get_transient( $cache );
-
-				if ( empty( $profile ) ) {
-					$data = $this->scrap( $username );
-
-					if ( ! empty( $data['entry_data']['ProfilePage'][0]['graphql']['user'] ) ) {
-						$user = $data['entry_data']['ProfilePage'][0]['graphql']['user'];
-
-						$profile = array(
-							'id'              => $user['id'],
-							'username'        => $user['username'],
-							'profile_picture' => $user['profile_pic_url'],
-							'full_name'       => $user['full_name'],
-							'bio'             => $user['biography'],
-							'website'         => $user['external_url'],
-							'is_business'     => (bool) $user['is_business_account'],
-							'counts'          => array(
-								'media'       => $user['edge_owner_to_timeline_media']['count'],
-								'follows'     => $user['edge_follow']['count'],
-								'followed_by' => $user['edge_followed_by']['count'],
-							),
-						);
-					}
-
-					if ( ! empty( $profile ) ) {
-						set_transient( $cache, $profile, 1440 * 60 );
-					}
-				}
-			}
-
-			return $profile;
-		}
-
-		/**
-		 * Get account's recent media.
+		 * Get media.
 		 *
 		 * @since  1.0
 		 * @access public
@@ -380,30 +365,15 @@ if ( ! class_exists( 'Stein_Kit_Instagram' ) ) {
 		 * @param  string $username Instagram account username.
 		 * @return array
 		 */
-		public function get_media( $media = array(), $username = null ) {
-			if ( ! empty( $this->options['access_token'] ) ) {
-				return $this->get_media_from_api();
-			}
-
-			return $this->get_media_from_scrapper( $username );
-		}
-
-		/**
-		 * Get account's recent media.
-		 *
-		 * @since  1.0
-		 * @access public
-		 * @return array
-		 */
-		public function get_media_from_api() {
+		public function get_media( $media = array() ) {
 			$cache = $this->id . '_media';
 			$media = get_transient( $cache );
 
 			if ( empty( $media ) ) {
-				$media = (array) $this->request( 'users/self/media/recent' );
+				$media = (array) $this->request( 'me/media', 'id,media_type,media_url,permalink,thumbnail_url,caption,timestamp' );
 
 				if ( ! empty( $media ) ) {
-					set_transient( $cache, $media, 1440 * 60 );
+					set_transient( $cache, $media, intval($this->get_option( DAY_IN_SECONDS/60, 'cache_expiry_time' )) * 60 );
 				}
 			}
 
@@ -411,96 +381,76 @@ if ( ! class_exists( 'Stein_Kit_Instagram' ) ) {
 		}
 
 		/**
-		 * Get account's recent media by scrapping profile page.
+		 * Refresh access token
 		 *
-		 * @since  1.0
+		 * @since  1.2.2
 		 * @access public
-		 * @param  string $username Instagram account username.
-		 * @return array
+		 * @return void
 		 */
-		public function get_media_from_scrapper( $username = null ) {
-			$media = array();
-
-			if ( ! empty( $username ) ) {
-				$cache = $this->id . '_media_' . md5( $username );
-				$media = get_transient( $cache );
-
-				if ( empty( $media ) ) {
-					$data = $this->scrap( $username );
-
-					if ( ! empty( $data['entry_data']['ProfilePage'][0]['graphql']['user'] ) ) {
-						$user = $data['entry_data']['ProfilePage'][0]['graphql']['user'];
-
-						if ( ! empty( $user['edge_owner_to_timeline_media']['edges'] ) ) {
-							$edges = $user['edge_owner_to_timeline_media']['edges'];
-
-							foreach ( $edges as $edge ) {
-								$item = array(
-									'id'           => $edge['node']['id'],
-									'user'         => array(
-										'id'              => $user['id'],
-										'full_name'       => $user['full_name'],
-										'profile_picture' => $user['profile_pic_url'],
-										'username'        => $user['username'],
-									),
-									'images'       => array(),
-									'created_time' => $edge['node']['taken_at_timestamp'],
-									'likes'        => array(
-										'count' => $edge['node']['edge_liked_by']['count'],
-									),
-									'comments'     => array(
-										'count' => $edge['node']['edge_media_to_comment']['count'],
-									),
-									'link'         => sprintf( 'https://www.instagram.com/p/%s', $edge['node']['shortcode'] ),
-								);
-
-								foreach ( $edge['node']['thumbnail_resources'] as $image ) {
-									if ( empty( $image['src'] ) ) {
-										continue;
-									}
-
-									$image_set = array(
-										'thumbnail'      => 150,
-										'low_resolution' => 320,
-										'standard_resolution' => 640,
-									);
-
-									foreach ( $image_set as $key => $value ) {
-										if ( isset( $image['config_width'] ) && ( absint( $image['config_width'] ) === $value ) ) {
-											$item['images'][ $key ] = array(
-												'width'  => absint( $image['config_width'] ),
-												'height' => absint( $image['config_height'] ),
-												'url'    => esc_url( $image['src'] ),
-											);
-										}
-									}
-								}
-
-								$media[] = $item;
-							}
-						}
-					}
-
-					if ( ! empty( $media ) ) {
-						set_transient( $cache, $media, 1440 * 60 );
-					}
-				}
+		public function refresh_access_token() {
+			if ( intval($this->options['expires_in']) > time() ) {
+				return;
 			}
 
-			return $media;
+			$response = wp_safe_remote_get(
+				add_query_arg(
+					array(
+						'grant_type'   => 'ig_refresh_token',
+						'access_token' => $this->options['access_token'],
+					),
+					$this->api_url . 'refresh_access_token'
+				)
+			);
+
+			if ( ! is_wp_error( $response ) && ( 200 === wp_remote_retrieve_response_code( $response ) ) ) {
+				$body = json_decode( wp_remote_retrieve_body( $response ), true );
+
+				$this->options['access_token'] = $body['access_token'];
+				$this->options['expires_in']   = time() + intval($body['expires_in']) - DAY_IN_SECONDS;
+
+				update_option( $this->id, $this->options );
+			}
+		}
+
+		/**
+		 * Add options page.
+		 *
+		 * @since  1.2.2
+		 * @access public
+		 * @return void
+		 */
+		public function activation() {
+			if ( ! wp_next_scheduled( $this->id . '_refresh_access_token' ) ) {
+				wp_schedule_event( time(), 'daily', $this->id . '_refresh_access_token' );
+			}
+		}
+
+		/**
+		 * Add options page.
+		 *
+		 * @since  1.2.2
+		 * @access public
+		 * @return void
+		 */
+		public function deactivation() {
+			$this->cleanup();
+
+			wp_clear_scheduled_hook( $this->id . '_refresh_access_token' );
 		}
 
 		/**
 		 * Clean up transients.
 		 *
 		 * @since  1.0
-		 * @access public
+		 * @access private
 		 * @return void
 		 */
-		public function cleanup() {
+		private function cleanup() {
 			global $wpdb;
 
-			$transients = $wpdb->get_results( $wpdb->prepare( 'SELECT * FROM ' . $wpdb->options . ' WHERE `option_name` = %s OR `option_name` LIKE %s', '_transient_' . $this->id, '_transient_' . $this->id . '_%' ) );
+			$transients = $wpdb->get_results(
+				$wpdb->prepare( 'SELECT * FROM ' . $wpdb->options . ' WHERE `option_name` = %s OR `option_name` LIKE %s', '_transient_' . $this->id, '_transient_' . $this->id . '_%' )
+			);
 
 			foreach ( (array) $transients as $transient ) {
 				delete_transient( substr( $transient->option_name, strlen( '_transient_' ) ) );
@@ -530,11 +480,10 @@ if ( ! function_exists( 'stein_kit_instagram_get_profile' ) ) {
 	 * Get Instagram profile.
 	 *
 	 * @since  1.0
-	 * @param  string $username Instagram account username.
 	 * @return array
 	 */
-	function stein_kit_instagram_get_profile( $username = null ) {
-		return apply_filters( 'stein_kit_instagram_get_profile', array(), $username );
+	function stein_kit_instagram_get_profile() {
+		return apply_filters( 'stein_kit_instagram_get_profile', array() );
 	}
 }
 
@@ -543,10 +492,9 @@ if ( ! function_exists( 'stein_kit_instagram_get_media' ) ) {
 	 * Get Instagram media.
 	 *
 	 * @since  1.0
-	 * @param  string $username Instagram account username.
 	 * @return array
 	 */
-	function stein_kit_instagram_get_media( $username = null ) {
-		return apply_filters( 'stein_kit_instagram_get_media', array(), $username );
+	function stein_kit_instagram_get_media() {
+		return apply_filters( 'stein_kit_instagram_get_media', array() );
 	}
 }
