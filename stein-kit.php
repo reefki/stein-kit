@@ -26,10 +26,11 @@ if ( ! function_exists( 'stein_kit_activated' ) ) {
 	 * Plugin Activation.
 	 *
 	 * @since 1.0
+	 * @param bool $networkwide The networkwide.
 	 * @return void
 	 */
-	function stein_kit_activated() {
-		do_action( 'stein_kit_activated' );
+	function stein_kit_activated( $networkwide ) {
+		do_action( 'stein_kit_activated', $networkwide );
 	}
 
 	register_activation_hook( __FILE__, 'stein_kit_activated' );
@@ -40,10 +41,11 @@ if ( ! function_exists( 'stein_kit_deactivated' ) ) {
 	 * Plugin Deactivation.
 	 *
 	 * @since 1.0
+	 * @param bool $networkwide The networkwide.
 	 * @return void
 	 */
-	function stein_kit_deactivated() {
-		do_action( 'stein_kit_deactivated' );
+	function stein_kit_deactivated( $networkwide ) {
+		do_action( 'stein_kit_deactivated', $networkwide );
 	}
 
 	register_deactivation_hook( __FILE__, 'stein_kit_deactivated' );
