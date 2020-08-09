@@ -177,8 +177,8 @@ if ( ! class_exists( 'Stein_Kit_Instagram_Widget' ) && class_exists( 'WP_Widget'
 			}
 
 			$button_text = $instance['button_text'];
-			$media = stein_kit_instagram_get_media();
-			$profile = stein_kit_instagram_get_profile();
+			$media       = stein_kit_instagram_get_media();
+			$profile     = stein_kit_instagram_get_profile();
 
 			if ( $button_text && ! empty( $instance['button_icon'] ) ) {
 				$button_text = "<i class=\"si si-instagram tw-mr-2\"></i>{$button_text}";

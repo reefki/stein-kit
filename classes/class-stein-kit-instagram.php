@@ -100,7 +100,7 @@ if ( ! class_exists( 'Stein_Kit_Instagram' ) ) {
 		 *
 		 * @since  1.0
 		 * @access public
-		 * @param  array $input Input data to sanitize.
+		 * @param  array $input The form input.
 		 * @return array
 		 */
 		public function sanitize( $input ) {
@@ -117,7 +117,9 @@ if ( ! class_exists( 'Stein_Kit_Instagram' ) ) {
 
 				add_settings_error( $this->id, $this->id, esc_html__( 'Instagram account successfully disconnected.', 'stein-kit' ), 'updated' );
 
-				$this->options['user_id'] = $this->options['access_token'] = $this->options['expires_in'] = '';
+				$this->options['user_id']      = '';
+				$this->options['access_token'] = '';
+				$this->options['expires_in']   = '';
 
 				return $this->options;
 			}
@@ -125,28 +127,28 @@ if ( ! class_exists( 'Stein_Kit_Instagram' ) ) {
 			$values = array();
 
 			$map = array(
-				'user_id' => 'integer',
-				'access_token' => 'string',
-				'expires_in' => 'integer',
+				'user_id'           => 'integer',
+				'access_token'      => 'string',
+				'expires_in'        => 'integer',
 				'cache_expiry_time' => 'integer',
 			);
 
-			foreach ($map as $key => $type) {
-				if ( ! isset( $input[$key] ) ) {
+			foreach ( $map as $key => $type ) {
+				if ( ! isset( $input[ $key ] ) ) {
 					continue;
 				}
 
-				switch ($type) {
+				switch ( $type ) {
 					case 'integer':
-						$value = intval($input[$key]);
+						$value = intval( $input[ $key ] );
 						break;
 
 					default:
-						$value = sanitize_text_field($input[$key]);
+						$value = sanitize_text_field( $input[ $key ] );
 						break;
 				}
 
-				$values[$key] = $value;
+				$values[ $key ] = $value;
 			}
 
 			return $values;
@@ -170,16 +172,15 @@ if ( ! class_exists( 'Stein_Kit_Instagram' ) ) {
 		}
 
 		/**
-		 * Sanitize form input.
+		 * Handle oauth response.
 		 *
-		 * @since  1.0
+		 * @since  1.2.2
 		 * @access public
-		 * @param  array $input Imput data to sanitize.
-		 * @return array
+		 * @return void
 		 */
 		public function handle_oauth_response() {
-			if ( isset( $_REQUEST['instagram_api_data'] ) ) { // Input var ok; sanitization ok.
-				$data = json_decode( base64_decode( $_REQUEST['instagram_api_data'] ), true );
+			if ( isset( $_REQUEST['instagram_api_data'] ) ) {
+				$data = json_decode( base64_decode( wp_unslash( $_REQUEST['instagram_api_data'] ) ), true );
 
 				update_option( $this->id, $data );
 
@@ -197,11 +198,11 @@ if ( ! class_exists( 'Stein_Kit_Instagram' ) ) {
 		 * @return void
 		 */
 		public function options_page_template() {
-			$connected 	  = isset( $_REQUEST['connected'] ) ? true : false;
+			$connected    = isset( $_REQUEST['connected'] ) ? true : false;
 			$user_id      = $this->get_option( '', 'user_id' );
 			$access_token = $this->get_option( '', 'access_token' );
 			$expires_in   = $this->get_option( '', 'expires_in' );
-			
+
 			if ( $connected && $access_token ) {
 				printf( '<div class="notice notice-success is-dismissible"><p><strong>%s</strong></p></div>', esc_html__( 'Instagram account successfully connected.', 'stein-kit' ) );
 			}
@@ -209,7 +210,7 @@ if ( ! class_exists( 'Stein_Kit_Instagram' ) ) {
 			<div class="wrap">
 				<h1><?php esc_html_e( 'Instagram Settings', 'stein-kit' ); ?></h1>
 
-				<h2><?php esc_html_e('Connection'); ?></h2>
+				<h2><?php esc_html_e( 'Connection', 'stein-kit' ); ?></h2>
 
 				<table class="form-table" role="presentation">
 					<tbody>
@@ -217,7 +218,7 @@ if ( ! class_exists( 'Stein_Kit_Instagram' ) ) {
 							<th scope="row">Personal Account</th>
 							<td>
 								<?php if ( $user_id ) : ?>
-									<p><?php esc_html_e('Connected account ID:', 'stein-kit' ); ?> <strong><?php echo esc_html($user_id); ?></strong></p>
+									<p><?php esc_html_e( 'Connected account ID:', 'stein-kit' ); ?> <strong><?php echo esc_html( $user_id ); ?></strong></p>
 
 									<form method="post" action="options.php">
 										<?php settings_fields( $this->id ); ?>
@@ -227,11 +228,11 @@ if ( ! class_exists( 'Stein_Kit_Instagram' ) ) {
 									<?php
 										$authorize_url = add_query_arg(
 											array(
-												'app_id'        => '2594225120812797',
-												'redirect_uri'  => rawurlencode( 'https://connect.rifki.net/instagram/auth' ),
+												'app_id' => '2594225120812797',
+												'redirect_uri' => rawurlencode( 'https://connect.rifki.net/instagram/auth' ),
 												'response_type' => 'code',
-												'scope'         => 'user_profile,user_media',
-												'state'         => base64_encode( admin_url() ),
+												'scope'  => 'user_profile,user_media',
+												'state'  => base64_encode( admin_url() ),
 											),
 											'https://www.instagram.com/oauth/authorize'
 										);
@@ -256,9 +257,9 @@ if ( ! class_exists( 'Stein_Kit_Instagram' ) ) {
 
 					<hr>
 
-					<input type="hidden" name="<?php echo esc_attr($this->id . '[user_id]'); ?>" value="<?php echo esc_attr($user_id ); ?>">
-					<input type="hidden" name="<?php echo esc_attr($this->id . '[access_token]'); ?>" value="<?php echo esc_attr($access_token ); ?>">
-					<input type="hidden" name="<?php echo esc_attr($this->id . '[expires_in]'); ?>" value="<?php echo esc_attr($expires_in ); ?>">
+					<input type="hidden" name="<?php echo esc_attr( $this->id . '[user_id]' ); ?>" value="<?php echo esc_attr( $user_id ); ?>">
+					<input type="hidden" name="<?php echo esc_attr( $this->id . '[access_token]' ); ?>" value="<?php echo esc_attr( $access_token ); ?>">
+					<input type="hidden" name="<?php echo esc_attr( $this->id . '[expires_in]' ); ?>" value="<?php echo esc_attr( $expires_in ); ?>">
 
 					<p class="submit">
 						<?php submit_button( esc_html__( 'Save Changes', 'stein-kit' ), 'primary', 'submit', false ); ?>
@@ -277,7 +278,7 @@ if ( ! class_exists( 'Stein_Kit_Instagram' ) ) {
 		 * @return void
 		 */
 		public function field_cache_expiry_time_template() {
-			$value = $this->get_option(DAY_IN_SECONDS/60, 'cache_expiry_time');
+			$value = $this->get_option( DAY_IN_SECONDS / 60, 'cache_expiry_time' );
 			?>
 				<input type="text" id="<?php echo esc_attr( $this->id . '_cache_expiry_time' ); ?>" name="<?php echo esc_attr( $this->id . '[cache_expiry_time]' ); ?>" value="<?php echo esc_attr( $value ); ?>">
 
@@ -295,7 +296,7 @@ if ( ! class_exists( 'Stein_Kit_Instagram' ) ) {
 		 * @return mixed
 		 */
 		public function get_option( $default, $key ) {
-			$options = (array) get_option($this->id);
+			$options = (array) get_option( $this->id );
 
 			if ( array_key_exists( $key, $options ) ) {
 				return $options[ $key ];
@@ -310,6 +311,7 @@ if ( ! class_exists( 'Stein_Kit_Instagram' ) ) {
 		 * @since  1.0
 		 * @access private
 		 * @param  string $endpoint The API endpoint.
+		 * @param  string $fields The API fields.
 		 * @return array
 		 */
 		private function request( $endpoint, $fields = null ) {
@@ -318,7 +320,7 @@ if ( ! class_exists( 'Stein_Kit_Instagram' ) ) {
 					add_query_arg(
 						array(
 							'access_token' => $this->options['access_token'],
-							'fields' => $fields
+							'fields'       => $fields,
 						),
 						$this->api_url . $endpoint
 					)
@@ -338,7 +340,6 @@ if ( ! class_exists( 'Stein_Kit_Instagram' ) ) {
 		 * @since  1.0
 		 * @access public
 		 * @param  string $profile Default profile.
-		 * @param  string $username Instagram account username.
 		 * @return array
 		 */
 		public function get_profile( $profile = array() ) {
@@ -349,7 +350,7 @@ if ( ! class_exists( 'Stein_Kit_Instagram' ) ) {
 				$profile = (array) $this->request( 'me', 'id,account_type,username,media_count' );
 
 				if ( ! empty( $profile ) ) {
-					set_transient( $cache, $profile, intval($this->get_option( DAY_IN_SECONDS/60, 'cache_expiry_time' )) * 60 );
+					set_transient( $cache, $profile, intval( $this->get_option( DAY_IN_SECONDS / 60, 'cache_expiry_time' ) ) * 60 );
 				}
 			}
 
@@ -362,7 +363,6 @@ if ( ! class_exists( 'Stein_Kit_Instagram' ) ) {
 		 * @since  1.0
 		 * @access public
 		 * @param  string $media Default media.
-		 * @param  string $username Instagram account username.
 		 * @return array
 		 */
 		public function get_media( $media = array() ) {
@@ -373,7 +373,7 @@ if ( ! class_exists( 'Stein_Kit_Instagram' ) ) {
 				$media = (array) $this->request( 'me/media', 'id,media_type,media_url,permalink,thumbnail_url,caption,timestamp' );
 
 				if ( ! empty( $media ) ) {
-					set_transient( $cache, $media, intval($this->get_option( DAY_IN_SECONDS/60, 'cache_expiry_time' )) * 60 );
+					set_transient( $cache, $media, intval( $this->get_option( DAY_IN_SECONDS / 60, 'cache_expiry_time' ) ) * 60 );
 				}
 			}
 
@@ -388,7 +388,7 @@ if ( ! class_exists( 'Stein_Kit_Instagram' ) ) {
 		 * @return void
 		 */
 		public function refresh_access_token() {
-			if ( intval($this->options['expires_in']) > time() ) {
+			if ( intval( $this->options['expires_in'] ) > time() ) {
 				return;
 			}
 
@@ -406,7 +406,7 @@ if ( ! class_exists( 'Stein_Kit_Instagram' ) ) {
 				$body = json_decode( wp_remote_retrieve_body( $response ), true );
 
 				$this->options['access_token'] = $body['access_token'];
-				$this->options['expires_in']   = time() + intval($body['expires_in']) - DAY_IN_SECONDS;
+				$this->options['expires_in']   = time() + intval( $body['expires_in'] ) - DAY_IN_SECONDS;
 
 				update_option( $this->id, $this->options );
 			}
