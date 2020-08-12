@@ -191,7 +191,7 @@ if ( ! class_exists( 'Stein_Kit_Instagram_Widget' ) && class_exists( 'WP_Widget'
 						<?php foreach ( $media as $item ) : ?>
 							<li class="instagram-item tw-flex-auto">
 								<a href="<?php echo esc_url( $item['permalink'] ); ?>" class="instagram-image tw-block tw-bg-alt tw-relative tw-aspect-ratio-1/1 hover_tw-opacity-85 tw-transition-opacity tw-transition-duration-200">
-									<img class="tw-object-cover tw-absolute tw-left-0 tw-top-0 tw-w-full tw-h-full lazyload" src="<?php echo esc_url( $item['media_url'] ); ?>" alt="<?php echo esc_attr( $item['id'] ); ?>">
+									<img class="tw-object-cover tw-absolute tw-left-0 tw-top-0 tw-w-full tw-h-full lazyload" src="<?php echo esc_url( $item['media_type'] == 'VIDEO' ? $item['thumbnail_url'] : $item['media_url'] ); ?>" alt="<?php echo esc_attr( $item['id'] ); ?>">
 								</a>
 							</li>
 						<?php endforeach; ?>
