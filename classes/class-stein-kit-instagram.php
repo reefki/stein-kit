@@ -212,9 +212,9 @@ if ( ! class_exists( 'Stein_Kit_Instagram' ) ) {
 
 			printf(
 				'<p class="help">%1$s <a href="%3$s" target="_blank">%2$s</a>.</p>',
-				esc_html__( 'Learn how to create an access token', 'stein-kit' ),
+				esc_html__( 'Learn how to create a Instagram app and obtain the access token', 'stein-kit' ),
 				esc_html__( 'here', 'stein-kit' ),
-				esc_url( 'https://admin.mailchimp.com/account/api' )
+				esc_url( 'https://docs.rifki.net/stein/#setup-instagram' )
 			);
 		}
 
