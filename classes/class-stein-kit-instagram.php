@@ -56,7 +56,6 @@ if ( ! class_exists( 'Stein_Kit_Instagram' ) ) {
 			add_action( 'stein_kit_deactivated', array( $this, 'deactivation' ) );
 
 			add_action( 'admin_init', array( $this, 'register_setting' ) );
-			add_action( 'admin_init', array( $this, 'handle_oauth_response' ) );
 			add_action( 'admin_menu', array( $this, 'add_options_page' ) );
 			add_action( $this->id . '_refresh_access_token', array( $this, 'refresh_access_token' ) );
 
@@ -81,9 +80,17 @@ if ( ! class_exists( 'Stein_Kit_Instagram' ) ) {
 
 			add_settings_section(
 				"{$this->id}_settings",
-				esc_html__( 'Settings', 'stein-kit' ),
+				'',
 				false,
 				$this->id
+			);
+
+			add_settings_field(
+				"{$this->id}_access_token",
+				esc_html__( 'Access Token ', 'stein-kit' ),
+				array( $this, 'field_access_token_template' ),
+				$this->id,
+				"{$this->id}_settings"
 			);
 
 			add_settings_field(
@@ -112,24 +119,10 @@ if ( ! class_exists( 'Stein_Kit_Instagram' ) ) {
 				return $this->options;
 			}
 
-			if ( isset( $_POST['disconnect'] ) ) {
-				$this->cleanup();
-
-				add_settings_error( $this->id, $this->id, esc_html__( 'Instagram account successfully disconnected.', 'stein-kit' ), 'updated' );
-
-				$this->options['user_id']      = '';
-				$this->options['access_token'] = '';
-				$this->options['expires_in']   = '';
-
-				return $this->options;
-			}
-
 			$values = array();
 
 			$map = array(
-				'user_id'           => 'integer',
 				'access_token'      => 'string',
-				'expires_in'        => 'integer',
 				'cache_expiry_time' => 'integer',
 			);
 
@@ -172,25 +165,6 @@ if ( ! class_exists( 'Stein_Kit_Instagram' ) ) {
 		}
 
 		/**
-		 * Handle oauth response.
-		 *
-		 * @since  1.2.2
-		 * @access public
-		 * @return void
-		 */
-		public function handle_oauth_response() {
-			if ( isset( $_REQUEST['instagram_api_data'] ) ) {
-				$data = json_decode( base64_decode( wp_unslash( $_REQUEST['instagram_api_data'] ) ), true );
-
-				update_option( $this->id, $data );
-
-				wp_redirect( admin_url( 'options-general.php?page=' . $this->id . '&connected=1' ) );
-
-				die();
-			}
-		}
-
-		/**
 		 * Options page template.
 		 *
 		 * @since  1.0
@@ -198,56 +172,9 @@ if ( ! class_exists( 'Stein_Kit_Instagram' ) ) {
 		 * @return void
 		 */
 		public function options_page_template() {
-			$connected    = isset( $_REQUEST['connected'] ) ? true : false;
-			$user_id      = $this->get_option( '', 'user_id' );
-			$access_token = $this->get_option( '', 'access_token' );
-			$expires_in   = $this->get_option( '', 'expires_in' );
-
-			if ( $connected && $access_token ) {
-				printf( '<div class="notice notice-success is-dismissible"><p><strong>%s</strong></p></div>', esc_html__( 'Instagram account successfully connected.', 'stein-kit' ) );
-			}
 			?>
 			<div class="wrap">
 				<h1><?php esc_html_e( 'Instagram Settings', 'stein-kit' ); ?></h1>
-
-				<h2><?php esc_html_e( 'Connection', 'stein-kit' ); ?></h2>
-
-				<table class="form-table" role="presentation">
-					<tbody>
-						<tr>
-							<th scope="row">Personal Account</th>
-							<td>
-								<?php if ( $user_id ) : ?>
-									<p><?php esc_html_e( 'Connected account ID:', 'stein-kit' ); ?> <strong><?php echo esc_html( $user_id ); ?></strong></p>
-
-									<form method="post" action="options.php">
-										<?php settings_fields( $this->id ); ?>
-										<p><?php submit_button( esc_html__( 'Disconnect', 'stein-kit' ), 'secondary', 'disconnect', false ); ?></p>
-									</form>
-								<?php else : ?>
-									<?php
-										$authorize_url = add_query_arg(
-											array(
-												'app_id' => '2594225120812797',
-												'redirect_uri' => rawurlencode( 'https://connect.rifki.net/instagram/auth' ),
-												'response_type' => 'code',
-												'scope'  => 'user_profile,user_media',
-												'state'  => base64_encode( admin_url() ),
-											),
-											'https://www.instagram.com/oauth/authorize'
-										);
-									?>
-
-									<p>
-										<a class="button button-secondary" href="<?php echo esc_url( $authorize_url ); ?>">
-											<?php esc_html_e( 'Connect', 'stein-kit' ); ?>
-										</a>
-									</p>
-								<?php endif; ?>
-							</td>
-						</tr>
-					</tbody>
-				</table>
 
 				<form method="post" action="options.php">
 					<?php
@@ -256,10 +183,6 @@ if ( ! class_exists( 'Stein_Kit_Instagram' ) ) {
 					?>
 
 					<hr>
-
-					<input type="hidden" name="<?php echo esc_attr( $this->id . '[user_id]' ); ?>" value="<?php echo esc_attr( $user_id ); ?>">
-					<input type="hidden" name="<?php echo esc_attr( $this->id . '[access_token]' ); ?>" value="<?php echo esc_attr( $access_token ); ?>">
-					<input type="hidden" name="<?php echo esc_attr( $this->id . '[expires_in]' ); ?>" value="<?php echo esc_attr( $expires_in ); ?>">
 
 					<p class="submit">
 						<?php submit_button( esc_html__( 'Save Changes', 'stein-kit' ), 'primary', 'submit', false ); ?>
@@ -271,9 +194,34 @@ if ( ! class_exists( 'Stein_Kit_Instagram' ) ) {
 		}
 
 		/**
-		 * API Key field template.
+		 * Access token field template.
 		 *
-		 * @since  1.0
+		 * @since  1.2.4
+		 * @access public
+		 * @return void
+		 */
+		public function field_access_token_template() {
+			$value = $this->get_option( '', 'access_token' );
+
+			printf(
+				'<input type="text" id="%1$s" name="%2$s[%1$s]" value="%3$s">',
+				'access_token',
+				esc_attr( $this->id ),
+				esc_attr( $value )
+			);
+
+			printf(
+				'<p class="help">%1$s <a href="%3$s" target="_blank">%2$s</a>.</p>',
+				esc_html__( 'Learn how to create an access token', 'stein-kit' ),
+				esc_html__( 'here', 'stein-kit' ),
+				esc_url( 'https://admin.mailchimp.com/account/api' )
+			);
+		}
+
+		/**
+		 * Cache expiry time field template.
+		 *
+		 * @since  1.2.2
 		 * @access public
 		 * @return void
 		 */
@@ -388,10 +336,6 @@ if ( ! class_exists( 'Stein_Kit_Instagram' ) ) {
 		 * @return void
 		 */
 		public function refresh_access_token() {
-			if ( intval( $this->options['expires_in'] ) > time() ) {
-				return;
-			}
-
 			$response = wp_safe_remote_get(
 				add_query_arg(
 					array(
@@ -406,14 +350,15 @@ if ( ! class_exists( 'Stein_Kit_Instagram' ) ) {
 				$body = json_decode( wp_remote_retrieve_body( $response ), true );
 
 				$this->options['access_token'] = $body['access_token'];
-				$this->options['expires_in']   = time() + intval( $body['expires_in'] ) - DAY_IN_SECONDS;
 
 				update_option( $this->id, $this->options );
+
+				return $body['access_token'];
 			}
 		}
 
 		/**
-		 * Add options page.
+		 * Hook when plugin activated.
 		 *
 		 * @since  1.2.2
 		 * @access public
@@ -421,12 +366,12 @@ if ( ! class_exists( 'Stein_Kit_Instagram' ) ) {
 		 */
 		public function activation() {
 			if ( ! wp_next_scheduled( $this->id . '_refresh_access_token' ) ) {
-				wp_schedule_event( time(), 'daily', $this->id . '_refresh_access_token' );
+				wp_schedule_event( time(), 'weekly', $this->id . '_refresh_access_token' );
 			}
 		}
 
 		/**
-		 * Add options page.
+		 * Hook when plugin deactivated.
 		 *
 		 * @since  1.2.2
 		 * @access public
