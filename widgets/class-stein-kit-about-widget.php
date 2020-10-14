@@ -92,6 +92,13 @@ if ( ! class_exists( 'Stein_Kit_About_Widget' ) && class_exists( 'WP_Widget' ) )
 							'name'    => 'social',
 							'type'    => 'true_false',
 						),
+						array(
+							'key'           => 'field_stein_kit_widget_about_social_limit',
+							'label'         => esc_html__( 'Social icons limit', 'stein-kit' ),
+							'name'          => 'social_limit',
+							'type'          => 'number',
+							'default_value' => 8,
+						),
 					),
 					'location' => array(
 						array(
@@ -166,6 +173,7 @@ if ( ! class_exists( 'Stein_Kit_About_Widget' ) && class_exists( 'WP_Widget' ) )
 			$text           = $this->get_field( 'text' );
 			$social_enabled = $this->get_field( 'social' );
 			$social_links   = apply_filters( 'stein_kit_about_widget_social', array() );
+			$social_links   = array_slice( $social_links, 0, $this->get_field( 'social_limit', 8 ) );
 
 			echo apply_filters( 'before_widget', $args['before_widget'], $instance, $this->id_base ); // phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped
 
@@ -210,9 +218,9 @@ if ( ! class_exists( 'Stein_Kit_About_Widget' ) && class_exists( 'WP_Widget' ) )
 
 			if ( ! empty( $social_links ) && $social_enabled ) :
 				?>
-				<ul class="social tw-mt-6 tw--mx-4">
+				<ul class="social tw-mt-6 tw--mx-3">
 					<?php foreach ( $social_links as $item ) : ?>
-						<li class="tw-inline-block tw-px-4">
+						<li class="tw-inline-block tw-px-3">
 							<a href="<?php echo esc_url( $item['url'] ); ?>" target="_blank" title="<?php echo esc_attr( $item['name'] ); ?>" class="tw-block tw-text-base tw-text-strong hover_tw-no-underline">
 								<i class="si si-<?php echo esc_attr( $item['icon'] ); ?>"></i>
 							</a>
